@@ -1,0 +1,30 @@
+rules_version = '2';
+
+// Firestore security rules for the Vehicle Inspection app.
+// An inspector may only read/write inspection data they own. See contracts/firestore-contract.md.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(inspectorId) {
+      return isSignedIn() && request.auth.uid == inspectorId;
+    }
+
+    match /inspectors/{inspectorId} {
+      allow read, write: if isOwner(inspectorId);
+    }
+
+    match /inspections/{inspectionId} {
+      allow create: if isSignedIn() && request.resource.data.inspectorId == request.auth.uid;
+      allow read, update, delete: if isSignedIn() && resource.data.inspectorId == request.auth.uid;
+
+      match /{document=**} {
+        allow read, write: if isSignedIn()
+          && get(/databases/$(database)/documents/inspections/$(inspectionId)).data.inspectorId == request.auth.uid;
+      }
+    }
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vsp.app/schemas/inspection-report.json",
+  "title": "Vehicle Inspection Report",
+  "type": "object",
+  "required": [
+    "reportId",
+    "inspectionId",
+    "vehicle",
+    "inspector",
+    "inspectionTime",
+    "device",
+    "images",
+    "scores",
+    "overallCondition",
+    "finalRecommendation",
+    "inspectionStatus"
+  ],
+  "properties": {
+    "reportId": { "type": "string" },
+    "inspectionId": { "type": "string" },
+    "context": {
+      "type": "string",
+      "enum": ["PRE_DELIVERY", "RENTAL", "AUCTION", "INSURANCE_CLAIM", "SERVICE", "RESALE", "HANDOVER"]
+    },
+    "vehicle": {
+      "type": "object",
+      "required": ["make", "model", "category"],
+      "properties": {
+        "vin": { "type": ["string", "null"] },
+        "category": { "type": "string", "enum": ["NEW", "OLD"] },
+        "numberOfOwnerships": { "type": ["integer", "null"], "minimum": 0 },
+        "numberOfKeys": { "type": ["integer", "null"], "minimum": 0 },
+        "year": { "type": ["integer", "null"] },
+        "manufacturer": { "type": ["string", "null"] },
+        "make": { "type": ["string", "null"] },
+        "model": { "type": ["string", "null"] },
+        "variant": { "type": ["string", "null"] },
+        "trim": { "type": ["string", "null"] },
+        "bodyStyle": { "type": ["string", "null"] },
+        "fuelType": { "type": ["string", "null"] },
+        "transmission": { "type": ["string", "null"] },
+        "color": { "type": ["string", "null"] },
+        "registrationNumber": { "type": ["string", "null"] },
+        "engineNumber": { "type": ["string", "null"] },
+        "chassisNumber": { "type": ["string", "null"] }
+      }
+    },
+    "inspector": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string" },
+        "displayName": { "type": "string" }
+      }
+    },
+    "inspectionTime": {
+      "type": "object",
+      "required": ["createdAt"],
+      "properties": {
+        "createdAt": { "type": "integer" },
+        "completedAt": { "type": ["integer", "null"] }
+      }
+    },
+    "gps": {
+      "type": ["object", "null"],
+      "properties": {
+        "lat": { "type": "number" },
+        "lng": { "type": "number" }
+      }
+    },
+    "device": {
+      "type": "object",
+      "properties": {
+        "model": { "type": "string" },
+        "osVersion": { "type": "string" },
+        "appVersion": { "type": "string" }
+      }
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["imageId", "section", "position", "captureState"],
+        "properties": {
+          "imageId": { "type": "string" },
+          "section": { "type": "string", "enum": ["EXTERIOR", "INTERIOR", "DOCUMENT"] },
+          "position": { "type": "string" },
+          "documentType": { "type": ["string", "null"], "enum": ["RC", "POLLUTION_CERTIFICATE", "INSURANCE", null] },
+          "captureState": { "type": "string", "enum": ["PENDING", "CAPTURED", "SKIPPED"] },
+          "skipReason": { "type": ["string", "null"] },
+          "thumbnailUrl": { "type": ["string", "null"] },
+          "imageUrl": { "type": ["string", "null"] },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "width": { "type": ["integer", "null"] },
+              "height": { "type": ["integer", "null"] },
+              "sizeBytes": { "type": ["integer", "null"] },
+              "capturedAt": { "type": ["integer", "null"] },
+              "orientation": { "type": ["integer", "null"] },
+              "quality": { "type": "string", "enum": ["OK", "BLURRY", "DARK", "OVEREXPOSED", "INCOMPLETE"] }
+            }
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["shape", "damageType", "severity"],
+              "properties": {
+                "shape": { "type": "string", "enum": ["RECTANGLE", "FREEHAND", "PIN"] },
+                "geometry": { "type": "object" },
+                "damageType": { "type": "string" },
+                "severity": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+                "comment": { "type": ["string", "null"] }
+              }
+            }
+          },
+          "aiFindings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["damageType", "confidence", "severity", "boundingBox", "reviewRequired"],
+              "properties": {
+                "damageType": { "type": "string" },
+                "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+                "severity": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+                "boundingBox": {
+                  "type": "object",
+                  "required": ["x", "y", "w", "h"],
+                  "properties": {
+                    "x": { "type": "number", "minimum": 0, "maximum": 1 },
+                    "y": { "type": "number", "minimum": 0, "maximum": 1 },
+                    "w": { "type": "number", "minimum": 0, "maximum": 1 },
+                    "h": { "type": "number", "minimum": 0, "maximum": 1 }
+                  }
+                },
+                "repairRecommendation": { "type": ["string", "null"] },
+                "reviewRequired": { "type": "boolean" },
+                "source": { "type": "string", "enum": ["INITIAL", "REVERIFICATION", "FINAL"] }
+              }
+            }
+          }
+        }
+      }
+    },
+    "damageSummary": {
+      "type": "object",
+      "properties": {
+        "totalDamageCount": { "type": "integer", "minimum": 0 },
+        "bySeverity": {
+          "type": "object",
+          "properties": {
+            "low": { "type": "integer" },
+            "medium": { "type": "integer" },
+            "high": { "type": "integer" },
+            "critical": { "type": "integer" }
+          }
+        }
+      }
+    },
+    "scores": {
+      "type": "object",
+      "required": ["exterior", "interior", "safety", "cosmetic", "confidence"],
+      "properties": {
+        "exterior": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "interior": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "safety": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "cosmetic": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "confidence": { "type": "integer", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "properties": {
+        "missingImages": { "type": "array", "items": { "type": "string" } },
+        "duplicateImages": { "type": "array", "items": { "type": "string" } },
+        "lowQualityImages": { "type": "array", "items": { "type": "string" } },
+        "suspiciousImages": { "type": "array", "items": { "type": "string" } },
+        "potentialFraud": { "type": "boolean" }
+      }
+    },
+    "overallCondition": { "type": "string" },
+    "inspectorNotes": { "type": ["string", "null"] },
+    "finalRecommendation": { "type": "string" },
+    "inspectionStatus": {
+      "type": "string",
+      "enum": ["DRAFT", "IN_PROGRESS", "COMPLETED", "SYNCED"]
+    }
+  }
+}
