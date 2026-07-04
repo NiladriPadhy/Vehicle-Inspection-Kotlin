@@ -23,6 +23,18 @@ class GetActiveQuestionnaireUseCase @Inject constructor(
     suspend operator fun invoke(): QuestionnaireConfig = configRepository.activeQuestionnaire()
 }
 
+/**
+ * Returns the questionnaire an inspection should render, reading the inspection's pinned snapshot
+ * (so later Firebase edits never mutate an in-flight inspection) and falling back to the active
+ * configuration when no snapshot exists.
+ */
+class GetInspectionQuestionnaireUseCase @Inject constructor(
+    private val inspectionRepository: InspectionRepository,
+) {
+    suspend operator fun invoke(inspectionId: String): QuestionnaireConfig =
+        inspectionRepository.questionnaireFor(inspectionId)
+}
+
 /** Per-question photo limit ([maxImages]) for a given item, read from the inspection's snapshot. */
 class GetItemImageLimitUseCase @Inject constructor(
     private val inspectionRepository: InspectionRepository,

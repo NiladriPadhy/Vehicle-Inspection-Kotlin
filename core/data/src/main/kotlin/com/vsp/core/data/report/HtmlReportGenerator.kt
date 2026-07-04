@@ -26,6 +26,8 @@ import com.vsp.core.model.catalog.ChecklistSection
 import com.vsp.core.model.catalog.ChecklistStatus
 import com.vsp.core.model.catalog.DocumentCatalog
 import com.vsp.core.model.catalog.PositionCatalog
+import com.vsp.core.model.config.QuestionnaireCatalog
+import com.vsp.core.model.config.QuestionnaireConfig
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -80,18 +82,19 @@ class HtmlReportGenerator @Inject constructor(
         bundles: List<ImageBundle>,
         generatedAt: Long,
         checklist: List<ChecklistResponse> = emptyList(),
+        questionnaire: QuestionnaireConfig,
     ): String {
         val applies = if (vehicle.category == VehicleCategory.OLD) Applicability.OLD else Applicability.NEW
         val byItem = checklist.associateBy { it.itemId }
-        val sections = ChecklistCatalog.forCategory(applies).filter { it.id != "final_assessment" }
+        val sections = QuestionnaireCatalog.sections(questionnaire, applies).filter { it.id != "final_assessment" }
         val stats = sections.map { computeStat(it, byItem) }.filter { it.rows.isNotEmpty() }
-        val summary = categorySummary(byItem, stats)
+        val summary = categorySummary(questionnaire, byItem, stats)
         val overall = overallRating(summary, stats)
         val qualityChecks = sections.sumOf { it.allItems.size }
 
         val validPhotos = bundles
             .filter { it.image.localFilePath.isNotBlank() && File(it.image.localFilePath).exists() }
-            .sortedWith(bundleComparator())
+            .sortedWith(bundleComparator(questionnaire))
         val marked = validPhotos.filter { it.findings.isNotEmpty() || it.annotations.isNotEmpty() }
         val unmarked = validPhotos.filter { it.findings.isEmpty() && it.annotations.isEmpty() }
         val cap = if (BuildConfig.PDF_MAX_IMAGES <= 0) Int.MAX_VALUE else BuildConfig.PDF_MAX_IMAGES
@@ -106,9 +109,9 @@ class HtmlReportGenerator @Inject constructor(
             append(contentsPage(stats))
             append(atAGlancePage(inspection, vehicle, generatedAt, overall))
             append(summaryPage(summary))
-            append(galleryPage(galleryPhotos))
+            append(galleryPage(galleryPhotos, questionnaire))
             stats.forEachIndexed { i, stat -> append(sectionPage(i + 1, stat)) }
-            append(damagePages(damagePhotos))
+            append(damagePages(damagePhotos, questionnaire))
             append(closingPage(inspection, checklist, inspector))
             append("</body></html>")
         }
@@ -255,7 +258,7 @@ class HtmlReportGenerator @Inject constructor(
         }
     }
 
-    private fun galleryPage(photos: List<ImageBundle>): String {
+    private fun galleryPage(photos: List<ImageBundle>, questionnaire: QuestionnaireConfig): String {
         if (photos.isEmpty()) return ""
         return buildString {
             append("<section class=\"page\">")
@@ -265,7 +268,7 @@ class HtmlReportGenerator @Inject constructor(
             photos.forEach { b ->
                 val uri = imageDataUri(b.image.localFilePath, BuildConfig.PDF_GALLERY_IMAGE_WIDTH) ?: return@forEach
                 append(
-                    """<figure class="shot"><img src="$uri"/><figcaption>${esc(imageLabel(b.image))}</figcaption></figure>""",
+                    """<figure class="shot"><img src="$uri"/><figcaption>${esc(imageLabel(b.image, questionnaire))}</figcaption></figure>""",
                 )
             }
             append("</div></section>")
@@ -302,13 +305,13 @@ class HtmlReportGenerator @Inject constructor(
         append("</tbody></table></section>")
     }
 
-    private fun damagePages(marked: List<ImageBundle>): String = buildString {
+    private fun damagePages(marked: List<ImageBundle>, questionnaire: QuestionnaireConfig): String = buildString {
         marked.forEach { bundle ->
             val uri = imageDataUri(bundle.image.localFilePath, BuildConfig.PDF_DAMAGE_IMAGE_WIDTH)
                 ?: return@forEach
             append("<section class=\"page\">")
             append(pageHeader())
-            append("<h3 class=\"section-h\">${esc(imageLabel(bundle.image))}</h3>")
+            append("<h3 class=\"section-h\">${esc(imageLabel(bundle.image, questionnaire))}</h3>")
             append("<div class=\"legend\">Green box = AI-detected damage &nbsp;&bull;&nbsp; Blue pin = manual annotation</div>")
             append("<div class=\"photo\"><img src=\"$uri\"/>")
             bundle.findings.forEach { f ->
@@ -499,6 +502,7 @@ class HtmlReportGenerator @Inject constructor(
     }
 
     private fun categorySummary(
+        questionnaire: QuestionnaireConfig,
         byItem: Map<String, ChecklistResponse>,
         stats: List<SectionStat>,
     ): List<Pair<String, Int>> {
@@ -513,7 +517,7 @@ class HtmlReportGenerator @Inject constructor(
             "fa_safety" to listOf("safety"),
             "fa_documentation" to listOf("documents"),
         )
-        val finalSection = ChecklistCatalog.section("final_assessment")
+        val finalSection = QuestionnaireCatalog.allSections(questionnaire).firstOrNull { it.id == "final_assessment" }
         val labels = finalSection?.allItems
             ?.filter { it.responseType == ChecklistResponseType.RATING_1_5 }
             ?.associate { it.id to it.label }
@@ -607,12 +611,12 @@ class HtmlReportGenerator @Inject constructor(
     private fun prettyType(type: DamageType): String =
         type.name.lowercase().replace('_', ' ').replaceFirstChar { it.uppercase() }
 
-    private fun imageLabel(image: InspectionImage): String {
+    private fun imageLabel(image: InspectionImage, questionnaire: QuestionnaireConfig): String {
         image.checklistItemId?.let { itemId ->
-            val item = ChecklistCatalog.item(itemId)
-            val section = ChecklistCatalog.sectionForItem(itemId)
+            val item = QuestionnaireCatalog.item(questionnaire, itemId)
+            val section = QuestionnaireCatalog.sectionForItem(questionnaire, itemId)
             if (item != null && section != null) {
-                val group = section.groups.firstOrNull { g -> g.items.any { it.id == itemId } }
+                val group = QuestionnaireCatalog.groupForItem(questionnaire, itemId)
                 val parts = listOfNotNull(
                     section.title,
                     group?.title?.takeIf { it != item.label && it != section.title },
@@ -634,12 +638,13 @@ class HtmlReportGenerator @Inject constructor(
         return "$sectionName \u2192 $detail"
     }
 
-    private fun bundleComparator(): Comparator<ImageBundle> {
+    private fun bundleComparator(questionnaire: QuestionnaireConfig): Comparator<ImageBundle> {
         val exterior = PositionCatalog.exterior.associate { it.id to it.order }
         val interior = PositionCatalog.interior.associate { it.id to it.order }
         val docs = DocumentCatalog.oldVehicleDocuments.associate { it.type to it.order }
+        val itemOrder = QuestionnaireCatalog.itemOrder(questionnaire)
         fun itemRank(b: ImageBundle): Int =
-            b.image.checklistItemId?.let { ChecklistCatalog.itemOrder[it] } ?: Int.MAX_VALUE
+            b.image.checklistItemId?.let { itemOrder[it] } ?: Int.MAX_VALUE
         fun sectionRank(s: Section) = when (s) {
             Section.DOCUMENT -> 0
             Section.EXTERIOR -> 1

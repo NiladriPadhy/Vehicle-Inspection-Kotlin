@@ -87,6 +87,8 @@ fun ChecklistSectionScreen(
                                     sectionId = section.id,
                                     response = state.responses[checklistItem.id],
                                     images = state.imagesByItem[checklistItem.id].orEmpty(),
+                                    maxImages = state.maxImagesByItem[checklistItem.id]
+                                        ?: BuildConfig.MAX_IMAGES_PER_ITEM,
                                     viewModel = viewModel,
                                     onCaptureItem = onCaptureItem,
                                     onOpenImage = onOpenImage,
@@ -106,6 +108,7 @@ private fun ItemCard(
     sectionId: String,
     response: ChecklistResponse?,
     images: List<InspectionImage>,
+    maxImages: Int,
     viewModel: ChecklistSectionViewModel,
     onCaptureItem: (String) -> Unit,
     onOpenImage: (String, String) -> Unit,
@@ -162,7 +165,7 @@ private fun ItemCard(
             if (item.photoCapable) {
                 ImageGrid(
                     images = images,
-                    max = BuildConfig.MAX_IMAGES_PER_ITEM,
+                    max = maxImages,
                     onCapture = { onCaptureItem(item.id) },
                     onOpenImage = { imageId -> onOpenImage(imageId, item.id) },
                     onDeleteImage = { imageId -> viewModel.deleteImage(imageId) },

@@ -3,13 +3,17 @@ package com.vsp.inspection.navigation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.vsp.core.model.Section
+import com.vsp.core.ui.components.LoadingOverlay
 import com.vsp.inspection.feature.auth.LoginScreen
 import com.vsp.inspection.feature.auth.SignUpScreen
 import com.vsp.inspection.feature.capture.CaptureScreen
@@ -28,11 +32,19 @@ import com.vsp.inspection.feature.verification.VerificationScreen
 
 /** Root navigation host wiring the full inspection wizard (US1–US9). */
 @Composable
-fun VspNavHost(navController: NavHostController = rememberNavController()) {
+fun VspNavHost(
+    navController: NavHostController = rememberNavController(),
+    rootViewModel: RootViewModel = hiltViewModel(),
+) {
+    val startState by rootViewModel.startState.collectAsStateWithLifecycle()
     Scaffold { innerPadding ->
+        val ready = startState as? StartState.Ready ?: run {
+            LoadingOverlay(message = "Loading…")
+            return@Scaffold
+        }
         NavHost(
             navController = navController,
-            startDestination = VspRoute.Login,
+            startDestination = if (ready.loggedIn) VspRoute.Dashboard else VspRoute.Login,
             modifier = Modifier.padding(innerPadding),
         ) {
             composable<VspRoute.Login> {

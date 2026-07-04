@@ -15,9 +15,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class LoginUiState(
-    // Hard-coded default credentials for testing: username/password = "test".
-    val email: String = "test",
-    val password: String = "test",
+    val email: String = "",
+    val password: String = "",
     val isLoading: Boolean = false,
     val error: String? = null,
     val signedIn: Boolean = false,
