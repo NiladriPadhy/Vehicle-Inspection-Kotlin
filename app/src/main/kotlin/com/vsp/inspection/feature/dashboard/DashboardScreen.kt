@@ -14,6 +14,7 @@ import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.ui.Alignment
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
@@ -45,6 +46,7 @@ fun DashboardScreen(
     onNewInspection: () -> Unit,
     onResume: (Inspection) -> Unit,
     onOpenChecklist: (Inspection) -> Unit,
+    onOpenData: () -> Unit = {},
     onSignedOut: () -> Unit,
     viewModel: DashboardViewModel = hiltViewModel(),
 ) {
@@ -57,6 +59,9 @@ fun DashboardScreen(
     VspScaffold(
         title = "Inspections",
         actions = {
+            IconButton(onClick = onOpenData) {
+                Icon(Icons.Filled.Share, contentDescription = "Backup & transfer")
+            }
             IconButton(onClick = viewModel::signOut) {
                 Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = "Sign out")
             }

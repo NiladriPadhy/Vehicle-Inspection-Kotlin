@@ -78,6 +78,11 @@ data class InspectionEntity(
     val finalRecommendation: String?,
     val summary: String?,
     val syncState: String,
+    // Snapshot of the questionnaire this inspection was created with (feature 002 §9). Pinning the
+    // definition here means later Firebase config edits never mutate an in-flight inspection.
+    val checklistVersion: Int? = null,
+    val checklistHash: String? = null,
+    val checklistSnapshotJson: String? = null,
 )
 
 @Entity(
@@ -249,6 +254,31 @@ data class ChecklistResponseEntity(
     val damageTypesCsv: String?,
     val updatedAt: Long,
     val syncState: String,
+)
+
+/** Cached active vendor configuration (questionnaire / vehicle catalog). One row per [type]. */
+@Entity(tableName = "config_cache")
+data class ConfigCacheEntity(
+    @PrimaryKey val type: String,
+    val version: Int,
+    val hash: String,
+    val json: String,
+    val fetchedAt: Long,
+)
+
+/** Local credential cache for offline re-login (custom RTDB auth). Passwords stored hashed only. */
+@Entity(tableName = "app_users", indices = [Index(value = ["email"], unique = true)])
+data class AppUserEntity(
+    @PrimaryKey val uid: String,
+    val email: String,
+    val displayName: String,
+    val vendorId: String,
+    val createdAt: Long,
+    val algo: String,
+    val iterations: Int,
+    val salt: String,
+    val hash: String,
+    val cachedAt: Long,
 )
 
 @Entity(tableName = "sync_tasks", indices = [Index("status")])

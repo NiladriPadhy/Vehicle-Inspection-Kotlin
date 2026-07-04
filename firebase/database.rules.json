@@ -1,0 +1,31 @@
+{
+  "//": "Firebase Realtime Database rules for the Vehicle Inspection app (feature 002).",
+  "//auth": "Custom credentials live in /users; access is gated by anonymous Firebase Auth so the store is never world-readable. This is app-level protection (see plan §8, O-2).",
+  "rules": {
+    "config": {
+      "//": "Vendor questionnaire + vehicle catalog. Any authenticated client may read.",
+      ".read": "auth != null",
+      "questionnaire": {
+        "//write": "Create-once seeding by a fresh client; subsequent edits are made from the Firebase console (admin).",
+        ".write": "auth != null && !data.exists()"
+      },
+      "vehicleCatalog": {
+        ".write": "auth != null && !data.exists()"
+      }
+    },
+    "users": {
+      ".read": false,
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+    "usersByEmail": {
+      ".read": "auth != null",
+      "$emailKey": {
+        "//write": "Create-once mapping to prevent email → uid hijacking.",
+        ".write": "auth != null && !data.exists()"
+      }
+    }
+  }
+}

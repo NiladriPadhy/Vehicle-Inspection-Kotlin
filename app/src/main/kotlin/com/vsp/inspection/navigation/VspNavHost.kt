@@ -11,7 +11,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.vsp.core.model.Section
 import com.vsp.inspection.feature.auth.LoginScreen
+import com.vsp.inspection.feature.auth.SignUpScreen
 import com.vsp.inspection.feature.capture.CaptureScreen
+import com.vsp.inspection.feature.data.DataScreen
 import com.vsp.inspection.feature.checklist.ChecklistHubScreen
 import com.vsp.inspection.feature.checklist.ChecklistSectionScreen
 import com.vsp.inspection.feature.checklist.SectionCaptureScreen
@@ -40,6 +42,18 @@ fun VspNavHost(navController: NavHostController = rememberNavController()) {
                             popUpTo(VspRoute.Login) { inclusive = true }
                         }
                     },
+                    onCreateAccount = { navController.navigate(VspRoute.SignUp) },
+                )
+            }
+
+            composable<VspRoute.SignUp> {
+                SignUpScreen(
+                    onSignedIn = {
+                        navController.navigate(VspRoute.Dashboard) {
+                            popUpTo(VspRoute.Login) { inclusive = true }
+                        }
+                    },
+                    onBackToLogin = { navController.popBackStack() },
                 )
             }
 
@@ -48,12 +62,17 @@ fun VspNavHost(navController: NavHostController = rememberNavController()) {
                     onNewInspection = { navController.navigate(VspRoute.StartInspection) },
                     onResume = { navController.navigate(VspRoute.IdentifyVehicle(it.id)) },
                     onOpenChecklist = { navController.navigate(VspRoute.ChecklistHub(it.id)) },
+                    onOpenData = { navController.navigate(VspRoute.DataManagement) },
                     onSignedOut = {
                         navController.navigate(VspRoute.Login) {
                             popUpTo(VspRoute.Dashboard) { inclusive = true }
                         }
                     },
                 )
+            }
+
+            composable<VspRoute.DataManagement> {
+                DataScreen(onBack = { navController.popBackStack() })
             }
 
             composable<VspRoute.StartInspection> {

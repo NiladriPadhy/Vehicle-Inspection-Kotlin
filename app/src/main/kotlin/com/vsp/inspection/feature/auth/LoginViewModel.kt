@@ -3,6 +3,7 @@ package com.vsp.inspection.feature.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vsp.core.domain.usecase.SignInUseCase
+import com.vsp.core.domain.usecase.SyncConfigUseCase
 import com.vsp.core.model.AppResult
 import com.vsp.inspection.feature.common.errorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +26,7 @@ data class LoginUiState(
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val signIn: SignInUseCase,
+    private val syncConfig: SyncConfigUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginUiState())
@@ -39,7 +41,11 @@ class LoginViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
             when (val result = signIn(current.email, current.password)) {
-                is AppResult.Success -> _state.update { it.copy(isLoading = false, signedIn = true) }
+                is AppResult.Success -> {
+                    // Login boundary: pull/seed the vendor questionnaire before entering the app.
+                    runCatching { syncConfig() }
+                    _state.update { it.copy(isLoading = false, signedIn = true) }
+                }
                 is AppResult.Failure ->
                     _state.update { it.copy(isLoading = false, error = result.error.errorMessage()) }
             }

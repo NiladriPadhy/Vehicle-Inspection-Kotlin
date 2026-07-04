@@ -8,8 +8,10 @@ import androidx.room.Update
 import androidx.room.Upsert
 import com.vsp.core.data.local.entity.AiFindingEntity
 import com.vsp.core.data.local.entity.AnnotationEntity
+import com.vsp.core.data.local.entity.AppUserEntity
 import com.vsp.core.data.local.entity.AuditLogEntity
 import com.vsp.core.data.local.entity.ChecklistResponseEntity
+import com.vsp.core.data.local.entity.ConfigCacheEntity
 import com.vsp.core.data.local.entity.InspectionEntity
 import com.vsp.core.data.local.entity.InspectionImageEntity
 import com.vsp.core.data.local.entity.InspectorEntity
@@ -41,6 +43,8 @@ interface InspectionDao {
     @Query("UPDATE inspections SET currentStep = :step, updatedAt = :updatedAt WHERE id = :id")
     suspend fun updateStep(id: String, step: String, updatedAt: Long)
     @Query("DELETE FROM inspections WHERE id = :id") suspend fun deleteById(id: String)
+    @Query("SELECT COUNT(*) FROM inspections") suspend fun count(): Int
+    @Query("SELECT * FROM inspections") suspend fun getAll(): List<InspectionEntity>
 }
 
 @Dao
@@ -104,6 +108,19 @@ interface ChecklistResponseDao {
     suspend fun getForInspection(inspectionId: String): List<ChecklistResponseEntity>
     @Query("SELECT * FROM checklist_responses WHERE inspectionId = :inspectionId AND itemId = :itemId LIMIT 1")
     suspend fun getItem(inspectionId: String, itemId: String): ChecklistResponseEntity?
+}
+
+@Dao
+interface ConfigCacheDao {
+    @Upsert suspend fun upsert(entry: ConfigCacheEntity)
+    @Query("SELECT * FROM config_cache WHERE type = :type LIMIT 1") suspend fun get(type: String): ConfigCacheEntity?
+}
+
+@Dao
+interface AppUserDao {
+    @Upsert suspend fun upsert(user: AppUserEntity)
+    @Query("SELECT * FROM app_users WHERE email = :email LIMIT 1") suspend fun getByEmail(email: String): AppUserEntity?
+    @Query("SELECT * FROM app_users WHERE uid = :uid LIMIT 1") suspend fun getByUid(uid: String): AppUserEntity?
 }
 
 @Dao

@@ -107,6 +107,9 @@ fun InspectionEntity.toDomain() = Inspection(
     finalRecommendation = finalRecommendation,
     summary = summary,
     syncState = SyncState.valueOf(syncState),
+    checklistVersion = checklistVersion,
+    checklistHash = checklistHash,
+    checklistSnapshotJson = checklistSnapshotJson,
 )
 
 fun Inspection.toEntity() = InspectionEntity(
@@ -132,6 +135,9 @@ fun Inspection.toEntity() = InspectionEntity(
     finalRecommendation = finalRecommendation,
     summary = summary,
     syncState = syncState.name,
+    checklistVersion = checklistVersion,
+    checklistHash = checklistHash,
+    checklistSnapshotJson = checklistSnapshotJson,
 )
 
 fun InspectionImageEntity.toDomain() = InspectionImage(

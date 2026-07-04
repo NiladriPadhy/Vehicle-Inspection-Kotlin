@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.vsp.core.domain.usecase.CaptureSectionImageUseCase
 import com.vsp.core.domain.usecase.DeleteImageUseCase
+import com.vsp.core.domain.usecase.GetItemImageLimitUseCase
 import com.vsp.core.domain.usecase.ObserveImagesUseCase
 import com.vsp.core.model.AppResult
 import com.vsp.core.model.CaptureState
@@ -44,6 +45,7 @@ class SectionCaptureViewModel @Inject constructor(
     observeImages: ObserveImagesUseCase,
     private val captureSectionImage: CaptureSectionImageUseCase,
     private val deleteImage: DeleteImageUseCase,
+    private val getItemImageLimit: GetItemImageLimitUseCase,
 ) : ViewModel() {
 
     private val route = savedStateHandle.toRoute<VspRoute.SectionCapture>()
@@ -56,6 +58,12 @@ class SectionCaptureViewModel @Inject constructor(
     val state: StateFlow<SectionCaptureUiState> = _state.asStateFlow()
 
     init {
+        viewModelScope.launch {
+            // Apply the per-question photo limit configured for this item (falls back to the
+            // global BuildConfig default when the question sets no explicit cap).
+            val limit = getItemImageLimit(inspectionId, checklistItemId, BuildConfig.MAX_IMAGES_PER_ITEM)
+            _state.update { it.copy(max = limit.maxImages) }
+        }
         viewModelScope.launch {
             observeImages(inspectionId).collect { images ->
                 val count = images.count { it.captureState == CaptureState.CAPTURED && belongsHere(it) }

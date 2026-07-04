@@ -24,9 +24,20 @@ val geminiApiKey: String =
 
 // Max photos an inspector can attach to a single checklist item. Override via
 // local.properties (MAX_IMAGES_PER_ITEM=..) or the MAX_IMAGES_PER_ITEM env var.
+// NOTE: superseded per-question by the configurable questionnaire (ConfigItem.maxImages); this
+// remains the global fallback default when a question does not specify its own cap.
 val maxImagesPerItem: Int =
     (localProps.getProperty("MAX_IMAGES_PER_ITEM") ?: System.getenv("MAX_IMAGES_PER_ITEM"))
         ?.toIntOrNull() ?: 10
+
+// Per-vendor Firebase Realtime Database configuration (build-time; one URL per vendor build).
+// Sourced from local.properties or environment; never committed. Empty = offline baseline mode.
+fun fbProp(key: String): String = (localProps.getProperty(key) ?: System.getenv(key) ?: "")
+val firebaseDbUrl = fbProp("FIREBASE_DB_URL")
+val firebaseProjectId = fbProp("FIREBASE_PROJECT_ID")
+val firebaseAppId = fbProp("FIREBASE_APP_ID")
+val firebaseApiKey = fbProp("FIREBASE_API_KEY")
+val vendorId = fbProp("VENDOR_ID").ifBlank { "default" }
 
 android {
     namespace = "com.vsp.inspection"
@@ -43,6 +54,12 @@ android {
         buildConfigField("String", "GEMINI_API_KEY", "\"$geminiApiKey\"")
         buildConfigField("String", "GEMINI_MODEL", "\"gemini-2.5-flash\"")
         buildConfigField("int", "MAX_IMAGES_PER_ITEM", "$maxImagesPerItem")
+
+        buildConfigField("String", "FIREBASE_DB_URL", "\"$firebaseDbUrl\"")
+        buildConfigField("String", "FIREBASE_PROJECT_ID", "\"$firebaseProjectId\"")
+        buildConfigField("String", "FIREBASE_APP_ID", "\"$firebaseAppId\"")
+        buildConfigField("String", "FIREBASE_API_KEY", "\"$firebaseApiKey\"")
+        buildConfigField("String", "VENDOR_ID", "\"$vendorId\"")
     }
 
     buildTypes {

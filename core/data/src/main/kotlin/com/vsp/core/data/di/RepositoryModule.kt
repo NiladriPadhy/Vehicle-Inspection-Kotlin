@@ -1,5 +1,8 @@
 package com.vsp.core.data.di
 
+import com.vsp.core.data.config.ConfigRepositoryImpl
+import com.vsp.core.data.portability.ExportRepositoryImpl
+import com.vsp.core.data.portability.ImportRepositoryImpl
 import com.vsp.core.data.repository.AiAnalysisRepositoryImpl
 import com.vsp.core.data.repository.AnnotationRepositoryImpl
 import com.vsp.core.data.repository.AuthRepositoryImpl
@@ -13,7 +16,10 @@ import com.vsp.core.domain.repository.AiAnalysisRepository
 import com.vsp.core.domain.repository.AnnotationRepository
 import com.vsp.core.domain.repository.AuthRepository
 import com.vsp.core.domain.repository.ChecklistRepository
+import com.vsp.core.domain.repository.ConfigRepository
+import com.vsp.core.domain.repository.ExportRepository
 import com.vsp.core.domain.repository.ImageRepository
+import com.vsp.core.domain.repository.ImportRepository
 import com.vsp.core.domain.repository.InspectionRepository
 import com.vsp.core.domain.repository.ReportRepository
 import com.vsp.core.domain.repository.SyncRepository
@@ -54,4 +60,13 @@ abstract class RepositoryModule {
 
     @Binds @Singleton
     abstract fun bindChecklistRepository(impl: ChecklistRepositoryImpl): ChecklistRepository
+
+    @Binds @Singleton
+    abstract fun bindConfigRepository(impl: ConfigRepositoryImpl): ConfigRepository
+
+    @Binds @Singleton
+    abstract fun bindExportRepository(impl: ExportRepositoryImpl): ExportRepository
+
+    @Binds @Singleton
+    abstract fun bindImportRepository(impl: ImportRepositoryImpl): ImportRepository
 }

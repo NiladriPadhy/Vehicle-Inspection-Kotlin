@@ -9,7 +9,12 @@ import com.vsp.core.data.mapper.toEntity
 import com.vsp.core.data.sync.SyncScheduler
 import com.vsp.core.domain.completeness.CompletenessCalculator
 import com.vsp.core.domain.coroutine.DispatcherProvider
+import com.vsp.core.domain.repository.ConfigRepository
 import com.vsp.core.domain.repository.InspectionRepository
+import com.vsp.core.model.config.QuestionnaireConfig
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import com.vsp.core.model.AppError
 import com.vsp.core.model.AppResult
 import com.vsp.core.model.CaptureState
@@ -35,8 +40,11 @@ class InspectionRepositoryImpl @Inject constructor(
     private val completenessCalculator: CompletenessCalculator,
     private val syncScheduler: SyncScheduler,
     private val fileStore: FileStore,
+    private val configRepository: ConfigRepository,
     private val dispatchers: DispatcherProvider,
 ) : InspectionRepository {
+
+    private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
 
     override fun observeInspections(inspectorId: String): Flow<List<Inspection>> =
         inspectionDao.observeForInspector(inspectorId).map { list -> list.map { it.toDomain() } }
@@ -52,6 +60,9 @@ class InspectionRepositoryImpl @Inject constructor(
         val now = System.currentTimeMillis()
         val vehicleId = UUID.randomUUID().toString()
         vehicleDao.upsert(Vehicle(id = vehicleId, category = category).toEntity())
+        // Pin the active questionnaire into this inspection so later Firebase config edits never
+        // mutate it (feature 002 §9).
+        val questionnaire = configRepository.activeQuestionnaire()
         val inspection = Inspection(
             id = UUID.randomUUID().toString(),
             inspectorId = inspectorId,
@@ -63,9 +74,18 @@ class InspectionRepositoryImpl @Inject constructor(
             createdAt = now,
             updatedAt = now,
             syncState = SyncState.PENDING,
+            checklistVersion = questionnaire.version,
+            checklistHash = questionnaire.hash,
+            checklistSnapshotJson = runCatching { json.encodeToString(questionnaire) }.getOrNull(),
         )
         inspectionDao.upsert(inspection.toEntity())
         AppResult.Success(inspection)
+    }
+
+    override suspend fun questionnaireFor(id: String): QuestionnaireConfig = withContext(dispatchers.io) {
+        val snapshot = inspectionDao.getById(id)?.checklistSnapshotJson
+        snapshot?.let { runCatching { json.decodeFromString<QuestionnaireConfig>(it) }.getOrNull() }
+            ?: configRepository.activeQuestionnaire()
     }
 
     override suspend fun updateStep(id: String, step: String): AppResult<Unit> =

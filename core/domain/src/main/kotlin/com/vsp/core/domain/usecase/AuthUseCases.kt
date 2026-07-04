@@ -17,6 +17,21 @@ class SignInUseCase @Inject constructor(
     }
 }
 
+class SignUpUseCase @Inject constructor(
+    private val authRepository: AuthRepository,
+) {
+    suspend operator fun invoke(displayName: String, email: String, password: String): AppResult<Session> {
+        if (displayName.isBlank()) return AppResult.Failure(AppError.Validation("Name is required"))
+        if (email.isBlank() || !email.contains('@')) {
+            return AppResult.Failure(AppError.Validation("A valid email is required"))
+        }
+        if (password.length < 6) {
+            return AppResult.Failure(AppError.Validation("Password must be at least 6 characters"))
+        }
+        return authRepository.signUp(displayName.trim(), email.trim(), password)
+    }
+}
+
 class SignOutUseCase @Inject constructor(
     private val authRepository: AuthRepository,
 ) {

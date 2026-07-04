@@ -11,7 +11,9 @@ import kotlinx.serialization.Serializable
  */
 sealed interface VspRoute {
     @Serializable data object Login : VspRoute
+    @Serializable data object SignUp : VspRoute
     @Serializable data object Dashboard : VspRoute
+    @Serializable data object DataManagement : VspRoute
 
     @Serializable data object StartInspection : VspRoute
     @Serializable data class IdentifyVehicle(val inspectionId: String) : VspRoute

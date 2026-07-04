@@ -7,8 +7,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.vsp.core.data.local.VspDatabase
 import com.vsp.core.data.local.dao.AiFindingDao
 import com.vsp.core.data.local.dao.AnnotationDao
+import com.vsp.core.data.local.dao.AppUserDao
 import com.vsp.core.data.local.dao.AuditLogDao
 import com.vsp.core.data.local.dao.ChecklistResponseDao
+import com.vsp.core.data.local.dao.ConfigCacheDao
 import com.vsp.core.data.local.dao.InspectionDao
 import com.vsp.core.data.local.dao.InspectionImageDao
 import com.vsp.core.data.local.dao.InspectorDao
@@ -73,11 +75,51 @@ object DatabaseModule {
         }
     }
 
+    /**
+     * Adds the questionnaire snapshot columns to inspections plus the config cache and local
+     * credential-cache tables (feature 002: configurable checklist + custom auth + export/import).
+     */
+    private val MIGRATION_4_5 = object : Migration(4, 5) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL("ALTER TABLE inspections ADD COLUMN checklistVersion INTEGER")
+            db.execSQL("ALTER TABLE inspections ADD COLUMN checklistHash TEXT")
+            db.execSQL("ALTER TABLE inspections ADD COLUMN checklistSnapshotJson TEXT")
+            db.execSQL(
+                """
+                CREATE TABLE IF NOT EXISTS config_cache (
+                    type TEXT NOT NULL PRIMARY KEY,
+                    version INTEGER NOT NULL,
+                    hash TEXT NOT NULL,
+                    json TEXT NOT NULL,
+                    fetchedAt INTEGER NOT NULL
+                )
+                """.trimIndent(),
+            )
+            db.execSQL(
+                """
+                CREATE TABLE IF NOT EXISTS app_users (
+                    uid TEXT NOT NULL PRIMARY KEY,
+                    email TEXT NOT NULL,
+                    displayName TEXT NOT NULL,
+                    vendorId TEXT NOT NULL,
+                    createdAt INTEGER NOT NULL,
+                    algo TEXT NOT NULL,
+                    iterations INTEGER NOT NULL,
+                    salt TEXT NOT NULL,
+                    hash TEXT NOT NULL,
+                    cachedAt INTEGER NOT NULL
+                )
+                """.trimIndent(),
+            )
+            db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_app_users_email ON app_users(email)")
+        }
+    }
+
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): VspDatabase =
         Room.databaseBuilder(context, VspDatabase::class.java, VspDatabase.NAME)
-            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
             .fallbackToDestructiveMigrationOnDowngrade()
             .build()
 
@@ -91,4 +133,6 @@ object DatabaseModule {
     @Provides fun provideAuditLogDao(db: VspDatabase): AuditLogDao = db.auditLogDao()
     @Provides fun provideSyncTaskDao(db: VspDatabase): SyncTaskDao = db.syncTaskDao()
     @Provides fun provideChecklistResponseDao(db: VspDatabase): ChecklistResponseDao = db.checklistResponseDao()
+    @Provides fun provideConfigCacheDao(db: VspDatabase): ConfigCacheDao = db.configCacheDao()
+    @Provides fun provideAppUserDao(db: VspDatabase): AppUserDao = db.appUserDao()
 }

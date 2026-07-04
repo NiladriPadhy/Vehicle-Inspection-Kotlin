@@ -4,8 +4,10 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.vsp.core.data.local.dao.AiFindingDao
 import com.vsp.core.data.local.dao.AnnotationDao
+import com.vsp.core.data.local.dao.AppUserDao
 import com.vsp.core.data.local.dao.AuditLogDao
 import com.vsp.core.data.local.dao.ChecklistResponseDao
+import com.vsp.core.data.local.dao.ConfigCacheDao
 import com.vsp.core.data.local.dao.InspectionDao
 import com.vsp.core.data.local.dao.InspectionImageDao
 import com.vsp.core.data.local.dao.InspectorDao
@@ -14,8 +16,10 @@ import com.vsp.core.data.local.dao.SyncTaskDao
 import com.vsp.core.data.local.dao.VehicleDao
 import com.vsp.core.data.local.entity.AiFindingEntity
 import com.vsp.core.data.local.entity.AnnotationEntity
+import com.vsp.core.data.local.entity.AppUserEntity
 import com.vsp.core.data.local.entity.AuditLogEntity
 import com.vsp.core.data.local.entity.ChecklistResponseEntity
+import com.vsp.core.data.local.entity.ConfigCacheEntity
 import com.vsp.core.data.local.entity.InspectionEntity
 import com.vsp.core.data.local.entity.InspectionImageEntity
 import com.vsp.core.data.local.entity.InspectorEntity
@@ -35,8 +39,10 @@ import com.vsp.core.data.local.entity.VehicleEntity
         AuditLogEntity::class,
         SyncTaskEntity::class,
         ChecklistResponseEntity::class,
+        ConfigCacheEntity::class,
+        AppUserEntity::class,
     ],
-    version = 4,
+    version = 5,
     exportSchema = true,
 )
 abstract class VspDatabase : RoomDatabase() {
@@ -50,6 +56,8 @@ abstract class VspDatabase : RoomDatabase() {
     abstract fun auditLogDao(): AuditLogDao
     abstract fun syncTaskDao(): SyncTaskDao
     abstract fun checklistResponseDao(): ChecklistResponseDao
+    abstract fun configCacheDao(): ConfigCacheDao
+    abstract fun appUserDao(): AppUserDao
 
     companion object {
         const val NAME = "vsp.db"

@@ -8,6 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,6 +27,7 @@ import com.vsp.core.ui.components.VspTextField
 @Composable
 fun LoginScreen(
     onSignedIn: () -> Unit,
+    onCreateAccount: () -> Unit = {},
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -63,6 +65,9 @@ fun LoginScreen(
                 onClick = viewModel::submit,
                 enabled = !state.isLoading && state.email.isNotBlank() && state.password.isNotBlank(),
             )
+            TextButton(onClick = onCreateAccount) {
+                Text("New inspector? Create an account")
+            }
         }
     }
 }

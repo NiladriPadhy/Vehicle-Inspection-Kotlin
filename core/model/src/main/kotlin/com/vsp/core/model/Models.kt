@@ -64,6 +64,11 @@ data class Inspection(
     val finalRecommendation: String? = null,
     val summary: String? = null,
     val syncState: SyncState = SyncState.PENDING,
+    // Pinned questionnaire snapshot (feature 002 §9): the exact config version/hash/definition this
+    // inspection was created with, so later Firebase edits never mutate it.
+    val checklistVersion: Int? = null,
+    val checklistHash: String? = null,
+    val checklistSnapshotJson: String? = null,
 )
 
 /** A captured image at a defined position (exterior/interior) or an Old-vehicle document. */

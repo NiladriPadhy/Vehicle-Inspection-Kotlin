@@ -7,6 +7,7 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.util.Base64
 import com.vsp.core.data.BuildConfig
+import com.vsp.core.data.remote.rtdb.FirebaseConfig
 import com.vsp.core.model.AIFinding
 import com.vsp.core.model.Annotation
 import com.vsp.core.model.ChecklistResponse
@@ -45,7 +46,16 @@ import kotlin.math.roundToInt
 @Singleton
 class HtmlReportGenerator @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val firebaseConfig: FirebaseConfig,
 ) {
+
+    /** Vendor identity (from the per-vendor build config) shown on the report as the company name. */
+    private val companyName: String?
+        get() = firebaseConfig.vendorId
+            .takeIf { it.isNotBlank() && !it.equals("default", ignoreCase = true) }
+            ?.split('-', '_', ' ')
+            ?.filter { it.isNotBlank() }
+            ?.joinToString(" ") { word -> word.replaceFirstChar { it.uppercase() } }
 
     data class ImageBundle(
         val image: InspectionImage,
@@ -117,6 +127,7 @@ class HtmlReportGenerator @Inject constructor(
             <section class="page cover">
               <div class="cover-top">
                 <div class="brand-eyebrow">VEHICLE INSPECTION</div>
+                ${companyName?.let { "<div class=\"cover-company\">${esc(it)}</div>" } ?: ""}
                 <h1 class="cover-title">${esc(vehicleTitle(vehicle))}</h1>
                 ${if (subtitle.isNotBlank()) "<div class=\"cover-sub\">${esc(subtitle)}</div>" else ""}
                 <div class="cover-date">Report generated on: ${esc(formatDate(generatedAt))}</div>
@@ -168,6 +179,7 @@ class HtmlReportGenerator @Inject constructor(
             vehicle.fuelType,
         ).joinToString("  |  ")
         val details = buildString {
+            companyName?.let { append(kv("Company Name", it)) }
             append(kv("Inspection date", formatDate(generatedAt)))
             vehicle.vin?.let { append(kv("VIN", it)) }
             vehicle.chassisNumber?.let { append(kv("Chassis number", it)) }
@@ -390,6 +402,7 @@ class HtmlReportGenerator @Inject constructor(
         .cover { padding: 0; color: #fff; background: linear-gradient(150deg, #0a2a66 0%, #0d47a1 55%, #1565c0 100%); }
         .cover-top { padding: 40mm 16mm 0; }
         .brand-eyebrow { font-size: 11px; letter-spacing: .28em; opacity: .8; }
+        .cover-company { font-size: 22px; font-weight: 800; margin-top: 6px; letter-spacing: .01em; }
         .cover-title { font-size: 40px; font-weight: 800; margin-top: 10px; line-height: 1.05; }
         .cover-sub { font-size: 15px; opacity: .9; margin-top: 10px; }
         .cover-date { font-size: 12px; opacity: .75; margin-top: 8px; }

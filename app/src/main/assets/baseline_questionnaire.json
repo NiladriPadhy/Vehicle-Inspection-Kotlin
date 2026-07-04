@@ -1,0 +1,2548 @@
+{
+    "version": 1,
+    "hash": "sha256:48b0b4c6eacb22dea37ed2a3448e2c9ed30ba52a0d149eb0f44eee177f332dca",
+    "updatedAt": 0,
+    "sections": [
+        {
+            "id": "documents",
+            "title": "Documents Verification",
+            "order": 2,
+            "appliesTo": "OLD",
+            "groups": [
+                {
+                    "id": "documents_main",
+                    "title": "Documents",
+                    "order": 0,
+                    "items": [
+                        {
+                            "id": "doc_rc",
+                            "label": "Registration Certificate (RC)",
+                            "responseType": "YES_NO",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "doc_insurance",
+                            "label": "Insurance Valid",
+                            "responseType": "YES_NO",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "doc_puc",
+                            "label": "Pollution Certificate",
+                            "responseType": "YES_NO",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "doc_road_tax",
+                            "label": "Road Tax Paid",
+                            "responseType": "YES_NO",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "doc_service_book",
+                            "label": "Service Book Available",
+                            "responseType": "YES_NO",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 4,
+                            "options": []
+                        },
+                        {
+                            "id": "doc_spare_key",
+                            "label": "Spare Key Available",
+                            "responseType": "YES_NO",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 5,
+                            "options": []
+                        },
+                        {
+                            "id": "doc_owner_manual",
+                            "label": "Owner Manual",
+                            "responseType": "YES_NO",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 6,
+                            "options": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "exterior",
+            "title": "Exterior Inspection",
+            "order": 3,
+            "appliesTo": "BOTH",
+            "groups": [
+                {
+                    "id": "ext_front",
+                    "title": "Front",
+                    "order": 0,
+                    "items": [
+                        {
+                            "id": "ext_front_bumper",
+                            "label": "Front Bumper",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_bonnet",
+                            "label": "Bonnet",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_grill",
+                            "label": "Grill",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_logo",
+                            "label": "Company Logo",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_windshield",
+                            "label": "Windshield",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 4,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_left_headlight",
+                            "label": "Left Headlight",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 5,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_right_headlight",
+                            "label": "Right Headlight",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 6,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_fog_lamps",
+                            "label": "Fog Lamps",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 7,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_number_plate",
+                            "label": "Number Plate",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 8,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_front_parking_sensors",
+                            "label": "Front Parking Sensors",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 9,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_front_camera",
+                            "label": "Front Camera",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 10,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_adas_camera",
+                            "label": "ADAS Camera",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 11,
+                            "options": []
+                        }
+                    ]
+                },
+                {
+                    "id": "ext_left",
+                    "title": "Left Side",
+                    "order": 1,
+                    "items": [
+                        {
+                            "id": "ext_l_front_fender",
+                            "label": "Front Fender",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_l_front_door",
+                            "label": "Front Door",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_l_rear_door",
+                            "label": "Rear Door",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_l_orvm",
+                            "label": "ORVM",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_l_door_handle",
+                            "label": "Door Handle",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 4,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_l_running_board",
+                            "label": "Running Board",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 5,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_l_quarter_panel",
+                            "label": "Quarter Panel",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 6,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_l_fuel_lid",
+                            "label": "Fuel Lid",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 7,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_l_side_glass",
+                            "label": "Side Glass",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 8,
+                            "options": []
+                        }
+                    ]
+                },
+                {
+                    "id": "ext_right",
+                    "title": "Right Side",
+                    "order": 2,
+                    "items": [
+                        {
+                            "id": "ext_r_front_fender",
+                            "label": "Front Fender",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_r_front_door",
+                            "label": "Front Door",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_r_rear_door",
+                            "label": "Rear Door",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_r_orvm",
+                            "label": "ORVM",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_r_door_handle",
+                            "label": "Door Handle",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 4,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_r_quarter_panel",
+                            "label": "Quarter Panel",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 5,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_r_side_glass",
+                            "label": "Side Glass",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 6,
+                            "options": []
+                        }
+                    ]
+                },
+                {
+                    "id": "ext_rear",
+                    "title": "Rear",
+                    "order": 3,
+                    "items": [
+                        {
+                            "id": "ext_rear_bumper",
+                            "label": "Rear Bumper",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_boot_door",
+                            "label": "Boot Door",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_tailgate",
+                            "label": "Tailgate",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_tail_lamps",
+                            "label": "Tail Lamps",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_reverse_lamps",
+                            "label": "Reverse Lamps",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 4,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_rear_windshield",
+                            "label": "Rear Windshield",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 5,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_spoiler",
+                            "label": "Spoiler",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 6,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_rear_camera",
+                            "label": "Rear Camera",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 7,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_rear_parking_sensors",
+                            "label": "Parking Sensors",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 8,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_exhaust_pipe",
+                            "label": "Exhaust Pipe",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 9,
+                            "options": []
+                        }
+                    ]
+                },
+                {
+                    "id": "ext_roof",
+                    "title": "Roof",
+                    "order": 4,
+                    "items": [
+                        {
+                            "id": "ext_roof_paint",
+                            "label": "Roof Paint",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_sunroof",
+                            "label": "Sunroof",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_roof_rails",
+                            "label": "Roof Rails",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_antenna",
+                            "label": "Antenna",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "ext_shark_fin",
+                            "label": "Shark Fin",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 4,
+                            "options": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "wheels",
+            "title": "Wheels & Tyres",
+            "order": 4,
+            "appliesTo": "BOTH",
+            "groups": [
+                {
+                    "id": "wheel_fl",
+                    "title": "Front Left",
+                    "order": 0,
+                    "items": [
+                        {
+                            "id": "wheel_fl_tread",
+                            "label": "Tread Depth",
+                            "responseType": "NUMBER",
+                            "appliesTo": "OLD",
+                            "unit": "mm",
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_fl_pressure",
+                            "label": "Tyre Pressure",
+                            "responseType": "NUMBER",
+                            "appliesTo": "OLD",
+                            "unit": "psi",
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_fl_sidewall",
+                            "label": "Sidewall Damage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "OLD",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_fl_rim",
+                            "label": "Rim Damage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_fl_alloy_scratch",
+                            "label": "Alloy Wheel Scratches",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 4,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_fl_nut",
+                            "label": "Wheel Nut Present",
+                            "responseType": "YES_NO",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 5,
+                            "options": []
+                        }
+                    ]
+                },
+                {
+                    "id": "wheel_fr",
+                    "title": "Front Right",
+                    "order": 1,
+                    "items": [
+                        {
+                            "id": "wheel_fr_tread",
+                            "label": "Tread Depth",
+                            "responseType": "NUMBER",
+                            "appliesTo": "OLD",
+                            "unit": "mm",
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_fr_pressure",
+                            "label": "Tyre Pressure",
+                            "responseType": "NUMBER",
+                            "appliesTo": "OLD",
+                            "unit": "psi",
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_fr_sidewall",
+                            "label": "Sidewall Damage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "OLD",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_fr_rim",
+                            "label": "Rim Damage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_fr_alloy_scratch",
+                            "label": "Alloy Wheel Scratches",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 4,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_fr_nut",
+                            "label": "Wheel Nut Present",
+                            "responseType": "YES_NO",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 5,
+                            "options": []
+                        }
+                    ]
+                },
+                {
+                    "id": "wheel_rl",
+                    "title": "Rear Left",
+                    "order": 2,
+                    "items": [
+                        {
+                            "id": "wheel_rl_tread",
+                            "label": "Tread Depth",
+                            "responseType": "NUMBER",
+                            "appliesTo": "OLD",
+                            "unit": "mm",
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_rl_pressure",
+                            "label": "Tyre Pressure",
+                            "responseType": "NUMBER",
+                            "appliesTo": "OLD",
+                            "unit": "psi",
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_rl_sidewall",
+                            "label": "Sidewall Damage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "OLD",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_rl_rim",
+                            "label": "Rim Damage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_rl_alloy_scratch",
+                            "label": "Alloy Wheel Scratches",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 4,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_rl_nut",
+                            "label": "Wheel Nut Present",
+                            "responseType": "YES_NO",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 5,
+                            "options": []
+                        }
+                    ]
+                },
+                {
+                    "id": "wheel_rr",
+                    "title": "Rear Right",
+                    "order": 3,
+                    "items": [
+                        {
+                            "id": "wheel_rr_tread",
+                            "label": "Tread Depth",
+                            "responseType": "NUMBER",
+                            "appliesTo": "OLD",
+                            "unit": "mm",
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_rr_pressure",
+                            "label": "Tyre Pressure",
+                            "responseType": "NUMBER",
+                            "appliesTo": "OLD",
+                            "unit": "psi",
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_rr_sidewall",
+                            "label": "Sidewall Damage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "OLD",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_rr_rim",
+                            "label": "Rim Damage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_rr_alloy_scratch",
+                            "label": "Alloy Wheel Scratches",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 4,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_rr_nut",
+                            "label": "Wheel Nut Present",
+                            "responseType": "YES_NO",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 5,
+                            "options": []
+                        }
+                    ]
+                },
+                {
+                    "id": "wheel_spare",
+                    "title": "Spare Wheel",
+                    "order": 4,
+                    "items": [
+                        {
+                            "id": "wheel_spare_tread",
+                            "label": "Tread Depth",
+                            "responseType": "NUMBER",
+                            "appliesTo": "OLD",
+                            "unit": "mm",
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_spare_pressure",
+                            "label": "Tyre Pressure",
+                            "responseType": "NUMBER",
+                            "appliesTo": "OLD",
+                            "unit": "psi",
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_spare_sidewall",
+                            "label": "Sidewall Damage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "OLD",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_spare_rim",
+                            "label": "Rim Damage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_spare_alloy_scratch",
+                            "label": "Alloy Wheel Scratches",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 4,
+                            "options": []
+                        },
+                        {
+                            "id": "wheel_spare_nut",
+                            "label": "Wheel Nut Present",
+                            "responseType": "YES_NO",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 5,
+                            "options": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "underbody",
+            "title": "Underbody",
+            "order": 5,
+            "appliesTo": "OLD",
+            "groups": [
+                {
+                    "id": "underbody_main",
+                    "title": "Underbody",
+                    "order": 0,
+                    "items": [
+                        {
+                            "id": "ub_oil_leak",
+                            "label": "Oil Leakage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "ub_coolant_leak",
+                            "label": "Coolant Leakage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "ub_brake_fluid_leak",
+                            "label": "Brake Fluid Leakage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "ub_fuel_leak",
+                            "label": "Fuel Leakage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "ub_rust",
+                            "label": "Rust",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 4,
+                            "options": []
+                        },
+                        {
+                            "id": "ub_chassis",
+                            "label": "Chassis Damage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 5,
+                            "options": []
+                        },
+                        {
+                            "id": "ub_suspension",
+                            "label": "Suspension Damage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 6,
+                            "options": []
+                        },
+                        {
+                            "id": "ub_exhaust",
+                            "label": "Exhaust Damage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 7,
+                            "options": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "engine_bay",
+            "title": "Engine Bay",
+            "order": 6,
+            "appliesTo": "OLD",
+            "groups": [
+                {
+                    "id": "engine_main",
+                    "title": "Engine Bay",
+                    "order": 0,
+                    "items": [
+                        {
+                            "id": "eng_oil_level",
+                            "label": "Engine Oil Level",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "eng_coolant_level",
+                            "label": "Coolant Level",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "eng_brake_fluid",
+                            "label": "Brake Fluid",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "eng_washer_fluid",
+                            "label": "Washer Fluid",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "eng_battery_condition",
+                            "label": "Battery Condition",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 4,
+                            "options": []
+                        },
+                        {
+                            "id": "eng_battery_terminals",
+                            "label": "Battery Terminals",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 5,
+                            "options": []
+                        },
+                        {
+                            "id": "eng_belts",
+                            "label": "Belts",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 6,
+                            "options": []
+                        },
+                        {
+                            "id": "eng_hoses",
+                            "label": "Hoses",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 7,
+                            "options": []
+                        },
+                        {
+                            "id": "eng_air_filter",
+                            "label": "Air Filter",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 8,
+                            "options": []
+                        },
+                        {
+                            "id": "eng_mounts",
+                            "label": "Engine Mounts",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 9,
+                            "options": []
+                        },
+                        {
+                            "id": "eng_oil_leak",
+                            "label": "Oil Leakage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 10,
+                            "options": []
+                        },
+                        {
+                            "id": "eng_noise",
+                            "label": "Engine Noise",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 11,
+                            "options": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "interior",
+            "title": "Interior Inspection",
+            "order": 7,
+            "appliesTo": "BOTH",
+            "groups": [
+                {
+                    "id": "int_dashboard",
+                    "title": "Dashboard",
+                    "order": 0,
+                    "items": [
+                        {
+                            "id": "int_dashboard_damage",
+                            "label": "Dashboard Damage",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "int_instrument_cluster",
+                            "label": "Instrument Cluster",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "int_warning_lights",
+                            "label": "Warning Lights",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "int_speedometer",
+                            "label": "Speedometer",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "int_tachometer",
+                            "label": "Tachometer",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 4,
+                            "options": []
+                        }
+                    ]
+                },
+                {
+                    "id": "int_seats",
+                    "title": "Seats",
+                    "order": 1,
+                    "items": [
+                        {
+                            "id": "int_driver_seat",
+                            "label": "Driver Seat",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "int_passenger_seat",
+                            "label": "Passenger Seat",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "int_rear_seat",
+                            "label": "Rear Seat",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "int_seat_covers",
+                            "label": "Seat Covers",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "int_seat_adjustment",
+                            "label": "Seat Adjustment",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 4,
+                            "options": []
+                        }
+                    ]
+                },
+                {
+                    "id": "int_steering",
+                    "title": "Steering",
+                    "order": 2,
+                    "items": [
+                        {
+                            "id": "int_steering_wear",
+                            "label": "Steering Wear",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "OLD",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "int_horn",
+                            "label": "Horn",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "int_steering_controls",
+                            "label": "Steering Controls",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 2,
+                            "options": []
+                        }
+                    ]
+                },
+                {
+                    "id": "int_doors",
+                    "title": "Doors",
+                    "order": 3,
+                    "items": [
+                        {
+                            "id": "int_door_lock",
+                            "label": "Lock",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "int_window_operation",
+                            "label": "Window Operation",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "int_child_lock",
+                            "label": "Child Lock",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "int_door_trim",
+                            "label": "Door Trim",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "int_door_pocket",
+                            "label": "Door Pocket",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 4,
+                            "options": []
+                        }
+                    ]
+                },
+                {
+                    "id": "int_roof",
+                    "title": "Roof Interior",
+                    "order": 4,
+                    "items": [
+                        {
+                            "id": "int_roof_lining",
+                            "label": "Roof Lining",
+                            "responseType": "COMPONENT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "int_cabin_lights",
+                            "label": "Cabin Lights",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "int_sun_visor",
+                            "label": "Sun Visor",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "int_grab_handles",
+                            "label": "Grab Handles",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 3,
+                            "options": []
+                        }
+                    ]
+                },
+                {
+                    "id": "int_floor",
+                    "title": "Floor",
+                    "order": 5,
+                    "items": [
+                        {
+                            "id": "int_floor_mats",
+                            "label": "Floor Mats",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "int_carpet",
+                            "label": "Carpet",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "int_water_leak",
+                            "label": "Water Leakage",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "int_mud",
+                            "label": "Mud",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": true,
+                            "maxImages": 10,
+                            "order": 3,
+                            "options": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "electrical",
+            "title": "Electrical Inspection",
+            "order": 8,
+            "appliesTo": "BOTH",
+            "groups": [
+                {
+                    "id": "electrical_main",
+                    "title": "Electrical",
+                    "order": 0,
+                    "items": [
+                        {
+                            "id": "el_headlights",
+                            "label": "Headlights",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "el_high_beam",
+                            "label": "High Beam",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "el_indicators",
+                            "label": "Indicators",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "el_brake_lights",
+                            "label": "Brake Lights",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "el_reverse_lights",
+                            "label": "Reverse Lights",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 4,
+                            "options": []
+                        },
+                        {
+                            "id": "el_hazard",
+                            "label": "Hazard Lights",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 5,
+                            "options": []
+                        },
+                        {
+                            "id": "el_drl",
+                            "label": "DRL",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 6,
+                            "options": []
+                        },
+                        {
+                            "id": "el_cabin_lights",
+                            "label": "Cabin Lights",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 7,
+                            "options": []
+                        },
+                        {
+                            "id": "el_power_windows",
+                            "label": "Power Windows",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 8,
+                            "options": []
+                        },
+                        {
+                            "id": "el_central_locking",
+                            "label": "Central Locking",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 9,
+                            "options": []
+                        },
+                        {
+                            "id": "el_remote_lock",
+                            "label": "Remote Lock",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 10,
+                            "options": []
+                        },
+                        {
+                            "id": "el_infotainment",
+                            "label": "Infotainment",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 11,
+                            "options": []
+                        },
+                        {
+                            "id": "el_touchscreen",
+                            "label": "Touchscreen",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 12,
+                            "options": []
+                        },
+                        {
+                            "id": "el_bluetooth",
+                            "label": "Bluetooth",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 13,
+                            "options": []
+                        },
+                        {
+                            "id": "el_usb",
+                            "label": "USB Ports",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 14,
+                            "options": []
+                        },
+                        {
+                            "id": "el_wireless_charger",
+                            "label": "Wireless Charger",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 15,
+                            "options": []
+                        },
+                        {
+                            "id": "el_12v",
+                            "label": "12V Socket",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 16,
+                            "options": []
+                        },
+                        {
+                            "id": "el_wipers",
+                            "label": "Wipers",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 17,
+                            "options": []
+                        },
+                        {
+                            "id": "el_washer_pump",
+                            "label": "Washer Pump",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 18,
+                            "options": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "ac",
+            "title": "Air Conditioning",
+            "order": 9,
+            "appliesTo": "BOTH",
+            "groups": [
+                {
+                    "id": "ac_main",
+                    "title": "Air Conditioning",
+                    "order": 0,
+                    "items": [
+                        {
+                            "id": "ac_cooling",
+                            "label": "Cooling Performance",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "ac_blower",
+                            "label": "Blower Speed",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "ac_compressor",
+                            "label": "AC Compressor",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "ac_rear_vent",
+                            "label": "Rear AC Vent",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "ac_heater",
+                            "label": "Heater",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 4,
+                            "options": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "safety",
+            "title": "Safety Features",
+            "order": 10,
+            "appliesTo": "BOTH",
+            "groups": [
+                {
+                    "id": "safety_main",
+                    "title": "Safety Features",
+                    "order": 0,
+                    "items": [
+                        {
+                            "id": "sf_airbags",
+                            "label": "Airbags",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "sf_seat_belts",
+                            "label": "Seat Belts",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "sf_abs",
+                            "label": "ABS",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "sf_esp",
+                            "label": "ESP",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "sf_tpms",
+                            "label": "TPMS",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 4,
+                            "options": []
+                        },
+                        {
+                            "id": "sf_reverse_camera",
+                            "label": "Reverse Camera",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 5,
+                            "options": []
+                        },
+                        {
+                            "id": "sf_parking_sensors",
+                            "label": "Parking Sensors",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 6,
+                            "options": []
+                        },
+                        {
+                            "id": "sf_adas",
+                            "label": "ADAS Functions",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 7,
+                            "options": []
+                        },
+                        {
+                            "id": "sf_blind_spot",
+                            "label": "Blind Spot Monitor",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 8,
+                            "options": []
+                        },
+                        {
+                            "id": "sf_lane_assist",
+                            "label": "Lane Assist",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 9,
+                            "options": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "mechanical",
+            "title": "Mechanical Inspection",
+            "order": 11,
+            "appliesTo": "OLD",
+            "groups": [
+                {
+                    "id": "mech_main",
+                    "title": "Mechanical",
+                    "order": 0,
+                    "items": [
+                        {
+                            "id": "mech_engine_start",
+                            "label": "Engine Start",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "mech_engine_idle",
+                            "label": "Engine Idle",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "mech_clutch",
+                            "label": "Clutch",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "mech_gear_shift",
+                            "label": "Gear Shift",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "mech_auto_transmission",
+                            "label": "Automatic Transmission",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 4,
+                            "options": []
+                        },
+                        {
+                            "id": "mech_brakes",
+                            "label": "Brakes",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 5,
+                            "options": []
+                        },
+                        {
+                            "id": "mech_hand_brake",
+                            "label": "Hand Brake",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 6,
+                            "options": []
+                        },
+                        {
+                            "id": "mech_suspension",
+                            "label": "Suspension",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 7,
+                            "options": []
+                        },
+                        {
+                            "id": "mech_steering_alignment",
+                            "label": "Steering Alignment",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 8,
+                            "options": []
+                        },
+                        {
+                            "id": "mech_wheel_alignment",
+                            "label": "Wheel Alignment",
+                            "responseType": "STATUS_OK",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 9,
+                            "options": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "road_test",
+            "title": "Road Test",
+            "order": 12,
+            "appliesTo": "OLD",
+            "groups": [
+                {
+                    "id": "road_main",
+                    "title": "Road Test",
+                    "order": 0,
+                    "items": [
+                        {
+                            "id": "rt_engine_power",
+                            "label": "Engine Power",
+                            "responseType": "PASS_FAIL",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "rt_acceleration",
+                            "label": "Acceleration",
+                            "responseType": "PASS_FAIL",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "rt_braking",
+                            "label": "Braking",
+                            "responseType": "PASS_FAIL",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "rt_steering",
+                            "label": "Steering",
+                            "responseType": "PASS_FAIL",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "rt_suspension",
+                            "label": "Suspension",
+                            "responseType": "PASS_FAIL",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 4,
+                            "options": []
+                        },
+                        {
+                            "id": "rt_noise_vibration",
+                            "label": "Noise/Vibration",
+                            "responseType": "PASS_FAIL",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 5,
+                            "options": []
+                        },
+                        {
+                            "id": "rt_gear_shifting",
+                            "label": "Gear Shifting",
+                            "responseType": "PASS_FAIL",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 6,
+                            "options": []
+                        },
+                        {
+                            "id": "rt_cruise_control",
+                            "label": "Cruise Control",
+                            "responseType": "PASS_FAIL",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 7,
+                            "options": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "final_assessment",
+            "title": "Final Assessment",
+            "order": 15,
+            "appliesTo": "BOTH",
+            "groups": [
+                {
+                    "id": "final_ratings",
+                    "title": "Category Ratings (1-5)",
+                    "order": 0,
+                    "items": [
+                        {
+                            "id": "fa_exterior",
+                            "label": "Exterior",
+                            "responseType": "RATING_1_5",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 0,
+                            "options": []
+                        },
+                        {
+                            "id": "fa_interior",
+                            "label": "Interior",
+                            "responseType": "RATING_1_5",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 1,
+                            "options": []
+                        },
+                        {
+                            "id": "fa_engine",
+                            "label": "Engine",
+                            "responseType": "RATING_1_5",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 2,
+                            "options": []
+                        },
+                        {
+                            "id": "fa_electrical",
+                            "label": "Electrical",
+                            "responseType": "RATING_1_5",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 3,
+                            "options": []
+                        },
+                        {
+                            "id": "fa_tyres",
+                            "label": "Tyres",
+                            "responseType": "RATING_1_5",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 4,
+                            "options": []
+                        },
+                        {
+                            "id": "fa_suspension",
+                            "label": "Suspension",
+                            "responseType": "RATING_1_5",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 5,
+                            "options": []
+                        },
+                        {
+                            "id": "fa_safety",
+                            "label": "Safety",
+                            "responseType": "RATING_1_5",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 6,
+                            "options": []
+                        },
+                        {
+                            "id": "fa_documentation",
+                            "label": "Documentation",
+                            "responseType": "RATING_1_5",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 7,
+                            "options": []
+                        }
+                    ]
+                },
+                {
+                    "id": "final_recommendation_group",
+                    "title": "Recommendation",
+                    "order": 1,
+                    "items": [
+                        {
+                            "id": "fa_recommendation",
+                            "label": "Repair Recommendation",
+                            "responseType": "TEXT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 0,
+                            "options": []
+                        }
+                    ]
+                },
+                {
+                    "id": "final_remarks",
+                    "title": "Inspector Remarks",
+                    "order": 2,
+                    "items": [
+                        {
+                            "id": "fa_remarks",
+                            "label": "Remarks",
+                            "responseType": "TEXT",
+                            "appliesTo": "BOTH",
+                            "unit": null,
+                            "mandatory": false,
+                            "allowImage": false,
+                            "maxImages": 0,
+                            "order": 0,
+                            "options": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
