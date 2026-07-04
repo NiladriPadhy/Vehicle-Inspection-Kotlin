@@ -7,10 +7,13 @@ import androidx.navigation.toRoute
 import com.vsp.core.data.report.ReportDto
 import com.vsp.core.domain.usecase.ExportReportPdfUseCase
 import com.vsp.core.domain.usecase.GenerateReportUseCase
+import com.vsp.core.domain.usecase.GetActiveBrandingUseCase
 import com.vsp.core.domain.usecase.ObserveReportUseCase
 import com.vsp.core.model.AppResult
 import com.vsp.core.model.RepairRecommendation
 import com.vsp.core.model.Report
+import com.vsp.core.model.Valuation
+import com.vsp.core.model.config.BrandingConfig
 import com.vsp.inspection.BuildConfig
 import com.vsp.inspection.feature.common.errorMessage
 import com.vsp.inspection.navigation.VspRoute
@@ -19,6 +22,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -52,6 +57,8 @@ data class ReportContent(
     val overallRating: Int?,
     val categoryRatings: List<CategoryRating>,
     val recommendation: String?,
+    val valuation: Valuation?,
+    val branding: BrandingConfig,
 )
 
 @HiltViewModel
@@ -60,6 +67,7 @@ class ReportViewModel @Inject constructor(
     observeReport: ObserveReportUseCase,
     private val generateReport: GenerateReportUseCase,
     private val exportReportPdf: ExportReportPdfUseCase,
+    private val getActiveBranding: GetActiveBrandingUseCase,
 ) : ViewModel() {
 
     val inspectionId: String = savedStateHandle.toRoute<VspRoute.Report>().inspectionId
@@ -67,9 +75,10 @@ class ReportViewModel @Inject constructor(
     val report: StateFlow<Report?> =
         observeReport(inspectionId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
+    private val branding = flow { emit(getActiveBranding()) }
+
     val content: StateFlow<ReportContent?> =
-        report
-            .map { it?.let(::buildContent) }
+        combine(report, branding) { report, branding -> report?.let { buildContent(it, branding) } }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
     private val _state = MutableStateFlow(ReportUiState())
@@ -111,10 +120,11 @@ class ReportViewModel @Inject constructor(
 
     // ---- Report JSON → display content --------------------------------------
 
-    private fun buildContent(report: Report): ReportContent? {
+    private fun buildContent(report: Report, branding: BrandingConfig): ReportContent? {
         val dto = runCatching { json.decodeFromString(ReportDto.serializer(), report.json) }.getOrNull()
             ?: return null
         val v = dto.vehicle
+        val company = companyName(branding)
 
         val subtitle = listOfNotNull(
             v.variant ?: v.trim,
@@ -143,7 +153,7 @@ class ReportViewModel @Inject constructor(
         }
 
         val glanceDetails = buildList {
-            companyName?.let { add(DetailRow("Company Name", it)) }
+            company?.let { add(DetailRow("Company Name", it)) }
             add(DetailRow("Inspection date", formatDate(report.generatedAt)))
             v.vin?.let { add(DetailRow("VIN", it)) }
             v.chassisNumber?.let { add(DetailRow("Chassis number", it)) }
@@ -171,6 +181,8 @@ class ReportViewModel @Inject constructor(
                 ?.map { (label, rating) -> CategoryRating(label, rating.coerceIn(1, 5)) }
                 .orEmpty(),
             recommendation = recommendation,
+            valuation = dto.valuation,
+            branding = branding,
         )
     }
 
@@ -211,12 +223,14 @@ class ReportViewModel @Inject constructor(
     private fun formatDate(millis: Long): String =
         SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault()).format(Date(millis))
 
-    private val companyName: String?
-        get() = BuildConfig.VENDOR_ID
+    private fun companyName(branding: BrandingConfig): String? {
+        branding.companyName.takeIf { it.isNotBlank() }?.let { return it }
+        return BuildConfig.VENDOR_ID
             .takeIf { it.isNotBlank() && !it.equals("default", ignoreCase = true) }
             ?.split('-', '_', ' ')
             ?.filter { it.isNotBlank() }
             ?.joinToString(" ") { word -> word.replaceFirstChar { it.uppercase() } }
+    }
 
     private companion object {
         val json = Json { ignoreUnknownKeys = true }

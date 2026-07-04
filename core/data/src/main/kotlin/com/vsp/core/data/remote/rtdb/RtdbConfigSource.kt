@@ -2,6 +2,7 @@ package com.vsp.core.data.remote.rtdb
 
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
+import com.vsp.core.model.config.BrandingConfig
 import com.vsp.core.model.config.ConfigGroup
 import com.vsp.core.model.config.ConfigItem
 import com.vsp.core.model.config.ConfigOption
@@ -82,6 +83,74 @@ class RtdbConfigSource @Inject constructor(
 
     suspend fun seedVehicleCatalog(catalog: VehicleCatalog): Boolean =
         writeConfig(PATH_VEHICLE_CATALOG, catalog.version, catalog.hash, catalog.updatedAt, json.encodeToString(catalog))
+
+    /**
+     * Reads vendor branding. Supports the three shapes an admin might create in the console:
+     *  1. expanded fields directly under `config/branding` (companyName, primaryColor, …) — preferred;
+     *  2. those same fields nested under a `json` object;
+     *  3. a legacy single stringified-JSON blob at `config/branding/json`.
+     */
+    suspend fun fetchBranding(): BrandingConfig? {
+        val db = firebase.database() ?: return null
+        firebase.ensureAuth()
+        val snap = runCatching { db.getReference(PATH_BRANDING).get().await() }
+            .onFailure { Log.w(TAG, "RTDB read failed for $PATH_BRANDING", it) }
+            .getOrNull() ?: return null
+        if (!snap.exists()) return null
+
+        val jsonChild = snap.child("json")
+        if (jsonChild.exists()) {
+            // A stringified blob (with tolerance for escaped quotes), or an object of fields.
+            runCatching { jsonChild.getValue(String::class.java) }.getOrNull()
+                ?.let { return decodeBrandingBlob(it) }
+            return brandingFromFields(jsonChild)
+        }
+        return brandingFromFields(snap)
+    }
+
+    private fun brandingFromFields(snap: DataSnapshot): BrandingConfig {
+        val d = BrandingConfig.DEFAULT
+        return BrandingConfig(
+            companyName = snap.child("companyName").asString() ?: d.companyName,
+            tagline = snap.child("tagline").asString() ?: d.tagline,
+            logoUrl = snap.child("logoUrl").asString() ?: d.logoUrl,
+            primaryColor = snap.child("primaryColor").asString() ?: d.primaryColor,
+            secondaryColor = snap.child("secondaryColor").asString() ?: d.secondaryColor,
+            accentColor = snap.child("accentColor").asString() ?: d.accentColor,
+            version = snap.child("version").asInt() ?: d.version,
+            hash = snap.child("hash").asString() ?: d.hash,
+            updatedAt = snap.child("updatedAt").asLong() ?: d.updatedAt,
+        )
+    }
+
+    /** Decodes a stringified branding blob, tolerating console-entered escaped quotes. */
+    private fun decodeBrandingBlob(raw: String): BrandingConfig? {
+        runCatching { json.decodeFromString<BrandingConfig>(raw) }.getOrNull()?.let { return it }
+        val unescaped = runCatching { json.decodeFromString<String>("\"$raw\"") }.getOrNull()
+            ?: raw.replace("\\\"", "\"").replace("\\\\", "\\")
+        return runCatching { json.decodeFromString<BrandingConfig>(unescaped) }
+            .onFailure { Log.w(TAG, "Malformed branding config: ${it.message}") }
+            .getOrNull()
+    }
+
+    suspend fun seedBranding(branding: BrandingConfig): Boolean {
+        val db = firebase.database() ?: return false
+        firebase.ensureAuth()
+        val value = mapOf(
+            "companyName" to branding.companyName,
+            "tagline" to branding.tagline,
+            "logoUrl" to branding.logoUrl,
+            "primaryColor" to branding.primaryColor,
+            "secondaryColor" to branding.secondaryColor,
+            "accentColor" to branding.accentColor,
+            "version" to branding.version,
+            "hash" to branding.hash,
+            "updatedAt" to branding.updatedAt,
+        )
+        return runCatching { db.getReference(PATH_BRANDING).setValue(value).await(); true }
+            .onFailure { Log.w(TAG, "RTDB write failed for $PATH_BRANDING", it) }
+            .getOrDefault(false)
+    }
 
     // ---- Questionnaire tree <-> RTDB map ------------------------------------
 
@@ -213,5 +282,6 @@ class RtdbConfigSource @Inject constructor(
         private const val TAG = "RtdbConfigSource"
         private const val PATH_QUESTIONNAIRE = "config/questionnaire"
         private const val PATH_VEHICLE_CATALOG = "config/vehicleCatalog"
+        private const val PATH_BRANDING = "config/branding"
     }
 }

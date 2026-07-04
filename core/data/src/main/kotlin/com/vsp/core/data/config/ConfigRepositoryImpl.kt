@@ -7,6 +7,7 @@ import com.vsp.core.data.remote.rtdb.RtdbConfigSource
 import com.vsp.core.domain.coroutine.DispatcherProvider
 import com.vsp.core.domain.repository.ConfigRepository
 import com.vsp.core.model.AppResult
+import com.vsp.core.model.config.BrandingConfig
 import com.vsp.core.model.config.ConfigHashing
 import com.vsp.core.model.config.QuestionnaireConfig
 import com.vsp.core.model.config.VehicleCatalog
@@ -62,8 +63,11 @@ class ConfigRepositoryImpl @Inject constructor(
             else -> cachedQuestionnaire()!!
         }
 
-        // Best-effort vehicle catalog refresh (non-fatal).
+        // Best-effort vehicle catalog + branding refresh (non-fatal). For a fresh vendor DB with no
+        // branding yet, seed the bundled baseline branding so the console is pre-populated.
         rtdb.fetchVehicleCatalog()?.let { cache(VEHICLE_CATALOG, it.version, it.hash, json.encodeToString(it)) }
+        val branding = rtdb.fetchBranding() ?: baselineProvider.branding().also { rtdb.seedBranding(it) }
+        cache(BRANDING, branding.version, branding.hash, json.encodeToString(branding))
 
         // hasLocalData is not required to gate adoption at a login boundary, but recorded for clarity.
         @Suppress("UNUSED_EXPRESSION") hasLocalData
@@ -75,6 +79,16 @@ class ConfigRepositoryImpl @Inject constructor(
             ?: configCacheDao.get(VEHICLE_CATALOG)?.let {
                 runCatching { json.decodeFromString<VehicleCatalog>(it.json) }.getOrNull()
             }
+    }
+
+    override suspend fun activeBranding(): BrandingConfig = withContext(dispatchers.io) {
+        // Fetch live (best-effort) so branding edits appear without requiring a re-login, then fall
+        // back to the last cached value, then the bundled baseline branding (offline/first-run).
+        rtdb.fetchBranding()?.also { cache(BRANDING, it.version, it.hash, json.encodeToString(it)) }
+            ?: configCacheDao.get(BRANDING)?.let {
+                runCatching { json.decodeFromString<BrandingConfig>(it.json) }.getOrNull()
+            }
+            ?: baselineProvider.branding()
     }
 
     private suspend fun cachedQuestionnaire(): QuestionnaireConfig? =
@@ -95,5 +109,6 @@ class ConfigRepositoryImpl @Inject constructor(
     companion object {
         private const val QUESTIONNAIRE = "QUESTIONNAIRE"
         private const val VEHICLE_CATALOG = "VEHICLE_CATALOG"
+        private const val BRANDING = "BRANDING"
     }
 }

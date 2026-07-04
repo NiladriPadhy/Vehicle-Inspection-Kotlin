@@ -7,12 +7,15 @@ import com.vsp.core.model.Inspection
 import com.vsp.core.model.InspectionImage
 import com.vsp.core.model.Inspector
 import com.vsp.core.model.Severity
+import com.vsp.core.model.ValuationCalculator
 import com.vsp.core.model.Vehicle
 import com.vsp.core.model.VehicleCategory
 import com.vsp.core.model.catalog.Applicability
 import com.vsp.core.model.catalog.ChecklistCatalog
+import com.vsp.core.model.catalog.ChecklistStatus
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 /**
  * Pure assembler that turns the local inspection graph into the report JSON defined by
@@ -45,6 +48,17 @@ class ReportBuilder @Inject constructor() {
             medium = countSeverity(allFindings, allAnnotations, Severity.MEDIUM),
             high = countSeverity(allFindings, allAnnotations, Severity.HIGH),
             critical = countSeverity(allFindings, allAnnotations, Severity.CRITICAL),
+        )
+        val finalAssessment = buildFinalAssessment(inspection, checklist)
+        // Prefer the inspector's explicit category ratings; otherwise fall back to a pass/fail-derived
+        // rating so the valuation still appears (parity with the PDF, which derives from section stats).
+        val explicitOverall = finalAssessment?.categoryRatings?.values
+            ?.takeIf { it.isNotEmpty() }?.average()?.roundToInt()
+        val valuation = ValuationCalculator.compute(
+            overallRating = explicitOverall ?: deriveOverallRating(checklist),
+            categoryRatings = finalAssessment?.categoryRatings.orEmpty(),
+            damageCount = allFindings.size + allAnnotations.size,
+            highSeverityCount = bySeverity.high + bySeverity.critical,
         )
         return ReportDto(
             reportId = reportId,
@@ -83,7 +97,8 @@ class ReportBuilder @Inject constructor() {
             inspectionStatus = inspection.status.name,
             checklist = buildChecklist(vehicle.category, checklist, images),
             damageAssessment = buildDamageAssessment(images),
-            finalAssessment = buildFinalAssessment(inspection, checklist),
+            finalAssessment = finalAssessment,
+            valuation = valuation,
         )
     }
 
@@ -168,6 +183,24 @@ class ReportBuilder @Inject constructor() {
             }
             ai + manual
         }
+
+    /** Overall 1–5 rating derived from answered pass/fail-style checklist items (null when none). */
+    private fun deriveOverallRating(responses: List<ChecklistResponse>): Int? {
+        var perfect = 0
+        var imperfect = 0
+        responses.filter { it.isAnswered }.forEach { r ->
+            when (r.status) {
+                ChecklistStatus.OK, ChecklistStatus.YES, ChecklistStatus.PASS, ChecklistStatus.GOOD -> perfect++
+                ChecklistStatus.NOT_OK, ChecklistStatus.NO, ChecklistStatus.FAIL,
+                ChecklistStatus.MINOR_SCRATCHES, ChecklistStatus.MAJOR_SCRATCHES, ChecklistStatus.DAMAGE,
+                -> imperfect++
+                else -> {}
+            }
+        }
+        val total = perfect + imperfect
+        if (total == 0) return null
+        return (perfect.toDouble() / total * 5).roundToInt().coerceIn(1, 5)
+    }
 
     private fun buildFinalAssessment(
         inspection: Inspection,

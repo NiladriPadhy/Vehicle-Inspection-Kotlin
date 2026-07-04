@@ -18,6 +18,7 @@ import com.vsp.core.data.report.ReportDeviceDto
 import com.vsp.core.data.report.WebViewPdfPrinter
 import com.vsp.core.data.sync.SyncScheduler
 import com.vsp.core.domain.coroutine.DispatcherProvider
+import com.vsp.core.domain.repository.ConfigRepository
 import com.vsp.core.domain.repository.InspectionRepository
 import com.vsp.core.domain.repository.ReportRepository
 import com.vsp.core.model.AppError
@@ -48,6 +49,7 @@ class ReportRepositoryImpl @Inject constructor(
     private val webViewPdfPrinter: WebViewPdfPrinter,
     private val syncScheduler: SyncScheduler,
     private val inspectionRepository: InspectionRepository,
+    private val configRepository: ConfigRepository,
     private val dispatchers: DispatcherProvider,
 ) : ReportRepository {
 
@@ -135,6 +137,7 @@ class ReportRepositoryImpl @Inject constructor(
         val checklist = checklistResponseDao.getForInspection(inspectionId).map { it.toDomain() }
         val existing = reportDao.getForInspection(inspectionId)
         val questionnaire = inspectionRepository.questionnaireFor(inspectionId)
+        val branding = configRepository.activeBranding()
         runCatching {
             // Heavy work (image decode + base64 embed) stays on IO; the WebView print pass hops
             // to the main thread internally.
@@ -146,6 +149,7 @@ class ReportRepositoryImpl @Inject constructor(
                 generatedAt = existing?.generatedAt ?: System.currentTimeMillis(),
                 checklist = checklist,
                 questionnaire = questionnaire,
+                branding = branding,
             )
             val out = webViewPdfPrinter.outputFile("inspection-report-${inspection.id}.pdf")
             webViewPdfPrinter.render(html, out).absolutePath

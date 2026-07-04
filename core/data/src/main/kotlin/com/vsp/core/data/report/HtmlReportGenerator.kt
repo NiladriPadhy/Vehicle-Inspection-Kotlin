@@ -17,6 +17,9 @@ import com.vsp.core.model.Inspector
 import com.vsp.core.model.InspectionImage
 import com.vsp.core.model.RepairRecommendation
 import com.vsp.core.model.Section
+import com.vsp.core.model.Severity
+import com.vsp.core.model.Valuation
+import com.vsp.core.model.ValuationCalculator
 import com.vsp.core.model.Vehicle
 import com.vsp.core.model.VehicleCategory
 import com.vsp.core.model.catalog.Applicability
@@ -26,6 +29,7 @@ import com.vsp.core.model.catalog.ChecklistSection
 import com.vsp.core.model.catalog.ChecklistStatus
 import com.vsp.core.model.catalog.DocumentCatalog
 import com.vsp.core.model.catalog.PositionCatalog
+import com.vsp.core.model.config.BrandingConfig
 import com.vsp.core.model.config.QuestionnaireCatalog
 import com.vsp.core.model.config.QuestionnaireConfig
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -51,13 +55,18 @@ class HtmlReportGenerator @Inject constructor(
     private val firebaseConfig: FirebaseConfig,
 ) {
 
-    /** Vendor identity (from the per-vendor build config) shown on the report as the company name. */
-    private val companyName: String?
-        get() = firebaseConfig.vendorId
+    /**
+     * Company name for the report: the vendor branding override when set, otherwise the per-vendor
+     * build config [FirebaseConfig.vendorId] (title-cased). `null` when neither is meaningful.
+     */
+    private fun companyName(branding: BrandingConfig): String? {
+        branding.companyName.takeIf { it.isNotBlank() }?.let { return it }
+        return firebaseConfig.vendorId
             .takeIf { it.isNotBlank() && !it.equals("default", ignoreCase = true) }
             ?.split('-', '_', ' ')
             ?.filter { it.isNotBlank() }
             ?.joinToString(" ") { word -> word.replaceFirstChar { it.uppercase() } }
+    }
 
     data class ImageBundle(
         val image: InspectionImage,
@@ -83,6 +92,7 @@ class HtmlReportGenerator @Inject constructor(
         generatedAt: Long,
         checklist: List<ChecklistResponse> = emptyList(),
         questionnaire: QuestionnaireConfig,
+        branding: BrandingConfig = BrandingConfig.DEFAULT,
     ): String {
         val applies = if (vehicle.category == VehicleCategory.OLD) Applicability.OLD else Applicability.NEW
         val byItem = checklist.associateBy { it.itemId }
@@ -91,6 +101,14 @@ class HtmlReportGenerator @Inject constructor(
         val summary = categorySummary(questionnaire, byItem, stats)
         val overall = overallRating(summary, stats)
         val qualityChecks = sections.sumOf { it.allItems.size }
+        val company = companyName(branding)
+
+        val damageCount = bundles.sumOf { it.findings.size + it.annotations.size }
+        val highSeverity = bundles.sumOf { b ->
+            b.findings.count { it.severity == Severity.HIGH || it.severity == Severity.CRITICAL } +
+                b.annotations.count { it.severity == Severity.HIGH || it.severity == Severity.CRITICAL }
+        }
+        val valuation = ValuationCalculator.compute(overall, summary.toMap(), damageCount, highSeverity)
 
         val validPhotos = bundles
             .filter { it.image.localFilePath.isNotBlank() && File(it.image.localFilePath).exists() }
@@ -104,10 +122,11 @@ class HtmlReportGenerator @Inject constructor(
         return buildString {
             append("<!DOCTYPE html><html><head><meta charset=\"utf-8\">")
             append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">")
-            append("<style>").append(css()).append("</style></head><body>")
-            append(coverPage(vehicle, generatedAt, qualityChecks))
+            append("<style>").append(css(branding)).append("</style></head><body>")
+            append(coverPage(vehicle, generatedAt, qualityChecks, company, branding.tagline))
             append(contentsPage(stats))
-            append(atAGlancePage(inspection, vehicle, generatedAt, overall))
+            append(atAGlancePage(inspection, vehicle, generatedAt, overall, company))
+            valuation?.let { append(valuationPage(it)) }
             append(summaryPage(summary))
             append(galleryPage(galleryPhotos, questionnaire))
             stats.forEachIndexed { i, stat -> append(sectionPage(i + 1, stat)) }
@@ -119,7 +138,13 @@ class HtmlReportGenerator @Inject constructor(
 
     // ---- Pages --------------------------------------------------------------
 
-    private fun coverPage(vehicle: Vehicle, generatedAt: Long, qualityChecks: Int): String {
+    private fun coverPage(
+        vehicle: Vehicle,
+        generatedAt: Long,
+        qualityChecks: Int,
+        company: String?,
+        tagline: String,
+    ): String {
         val subtitle = listOfNotNull(
             vehicle.variant ?: vehicle.trim,
             vehicle.year?.toString(),
@@ -130,7 +155,8 @@ class HtmlReportGenerator @Inject constructor(
             <section class="page cover">
               <div class="cover-top">
                 <div class="brand-eyebrow">VEHICLE INSPECTION</div>
-                ${companyName?.let { "<div class=\"cover-company\">${esc(it)}</div>" } ?: ""}
+                ${company?.let { "<div class=\"cover-company\">${esc(it)}</div>" } ?: ""}
+                ${if (tagline.isNotBlank()) "<div class=\"cover-tagline\">${esc(tagline)}</div>" else ""}
                 <h1 class="cover-title">${esc(vehicleTitle(vehicle))}</h1>
                 ${if (subtitle.isNotBlank()) "<div class=\"cover-sub\">${esc(subtitle)}</div>" else ""}
                 <div class="cover-date">Report generated on: ${esc(formatDate(generatedAt))}</div>
@@ -174,6 +200,7 @@ class HtmlReportGenerator @Inject constructor(
         vehicle: Vehicle,
         generatedAt: Long,
         overall: Int?,
+        company: String?,
     ): String {
         val subtitle = listOfNotNull(
             vehicle.variant ?: vehicle.trim,
@@ -182,7 +209,7 @@ class HtmlReportGenerator @Inject constructor(
             vehicle.fuelType,
         ).joinToString("  |  ")
         val details = buildString {
-            companyName?.let { append(kv("Company Name", it)) }
+            company?.let { append(kv("Company Name", it)) }
             append(kv("Inspection date", formatDate(generatedAt)))
             vehicle.vin?.let { append(kv("VIN", it)) }
             vehicle.chassisNumber?.let { append(kv("Chassis number", it)) }
@@ -230,6 +257,42 @@ class HtmlReportGenerator @Inject constructor(
 
     private fun kv(k: String, v: String) =
         """<div class="kv"><span class="kv-k">${esc(k)}</span><span class="kv-v">${esc(v)}</span></div>"""
+
+    private fun valuationPage(v: Valuation): String {
+        val color = when {
+            v.overallScore >= 70 -> "#2E7D32"
+            v.overallScore >= 50 -> "#F9A825"
+            else -> "#C62828"
+        }
+        val posColor = when (v.marketPosition) {
+            "Above typical" -> "#2E7D32"
+            "Below typical" -> "#C62828"
+            else -> "#F9A825"
+        }
+        val delta = if (v.deltaVsTypical >= 0) "+${v.deltaVsTypical}" else "${v.deltaVsTypical}"
+        return """
+            <section class="page">
+              ${pageHeader()}
+              <h2 class="title">Valuation &amp; market position</h2>
+              <p class="muted">An estimated condition score to support buy/sell decisions, compared with a typical vehicle of this class.</p>
+              <div class="val-hero">
+                <div class="val-score" style="color:$color;">${v.overallScore}<span>/100</span></div>
+                <div class="val-band" style="background:${color}1A;color:$color;">${esc(v.conditionBand)} condition</div>
+              </div>
+              <div class="val-bar">
+                <div class="val-bar-fill" style="width:${v.overallScore.coerceIn(0, 100)}%;background:$color;"></div>
+                <div class="val-bench" style="left:${v.benchmarkScore.coerceIn(0, 100)}%;"></div>
+              </div>
+              <div class="val-legend"><span>This vehicle: ${v.overallScore}/100</span><span>Typical: ${v.benchmarkScore}/100 ($delta vs typical)</span></div>
+              <div class="cat-card">
+                <div class="cat-row"><div class="cat-name">Market position</div><div class="badge" style="background:${posColor}1A;color:$posColor;">${esc(v.marketPosition)}</div></div>
+                <div class="cat-desc">${esc(v.verdict)}</div>
+              </div>
+              <div class="note-card"><h3 class="section-h">Price guidance</h3><p>${esc(v.priceGuidance)}</p></div>
+              <div class="note-card"><h3 class="section-h">Damage considered</h3><p>${v.damageCount} damage mark(s) factored into the score.</p></div>
+            </section>
+        """.trimIndent()
+    }
 
     private fun summaryPage(summary: List<Pair<String, Int>>): String {
         if (summary.isEmpty()) return ""
@@ -388,7 +451,14 @@ class HtmlReportGenerator @Inject constructor(
 
     // ---- CSS ----------------------------------------------------------------
 
-    private fun css(): String = """
+    private fun cssColor(hex: String, fallback: String): String =
+        if (hex.matches(Regex("#[0-9a-fA-F]{6}"))) hex else fallback
+
+    private fun css(branding: BrandingConfig): String {
+        val primary = cssColor(branding.primaryColor, BrandingConfig.DEFAULT_PRIMARY)
+        val secondary = cssColor(branding.secondaryColor, BrandingConfig.DEFAULT_SECONDARY)
+        val accent = cssColor(branding.accentColor, BrandingConfig.DEFAULT_ACCENT)
+        return """
         * { box-sizing: border-box; margin: 0; padding: 0; }
         @page { size: A4; margin: 0; }
         html, body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #1f2933; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -396,16 +466,17 @@ class HtmlReportGenerator @Inject constructor(
         .page:last-child { page-break-after: auto; }
         .pg-head { position: absolute; top: 8mm; left: 16mm; font-size: 9px; letter-spacing: .12em; color: #9aa5b1; text-transform: uppercase; }
         .title { font-size: 24px; font-weight: 800; color: #102a43; margin-bottom: 12px; }
-        .section-h { font-size: 15px; font-weight: 700; color: #0b6e2e; margin: 14px 0 8px; }
+        .section-h { font-size: 15px; font-weight: 700; color: $accent; margin: 14px 0 8px; }
         .sub-h { font-size: 13px; font-weight: 700; color: #243b53; margin: 12px 0 6px; }
         .muted { color: #627d98; font-size: 12px; line-height: 1.55; }
         .disclaimer { color: #9aa5b1; font-size: 10px; margin-top: 20px; line-height: 1.5; }
 
         /* Cover */
-        .cover { padding: 0; color: #fff; background: linear-gradient(150deg, #0a2a66 0%, #0d47a1 55%, #1565c0 100%); }
+        .cover { padding: 0; color: #fff; background: linear-gradient(150deg, $primary 0%, $secondary 100%); }
         .cover-top { padding: 40mm 16mm 0; }
         .brand-eyebrow { font-size: 11px; letter-spacing: .28em; opacity: .8; }
         .cover-company { font-size: 22px; font-weight: 800; margin-top: 6px; letter-spacing: .01em; }
+        .cover-tagline { font-size: 12px; opacity: .85; margin-top: 4px; }
         .cover-title { font-size: 40px; font-weight: 800; margin-top: 10px; line-height: 1.05; }
         .cover-sub { font-size: 15px; opacity: .9; margin-top: 10px; }
         .cover-date { font-size: 12px; opacity: .75; margin-top: 8px; }
@@ -419,12 +490,12 @@ class HtmlReportGenerator @Inject constructor(
 
         /* TOC */
         .toc-entry { display: flex; gap: 14px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid #eef2f7; }
-        .toc-num { font-size: 18px; font-weight: 800; color: #0d47a1; }
+        .toc-num { font-size: 18px; font-weight: 800; color: $primary; }
         .toc-title { font-weight: 700; font-size: 14px; }
         .toc-desc { color: #627d98; font-size: 11px; margin-top: 3px; }
         .toc-sub { list-style: none; margin: 6px 0 6px 34px; }
         .toc-sub li { font-size: 12px; color: #334e68; padding: 4px 0 4px 16px; position: relative; }
-        .toc-sub li:before { content: '\2022'; color: #0d47a1; position: absolute; left: 0; }
+        .toc-sub li:before { content: '\2022'; color: $primary; position: absolute; left: 0; }
 
         /* At a glance */
         .glance { display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #f7f9fc; border: 1px solid #e6ecf3; border-radius: 14px; padding: 20px; margin: 8px 0 4px; }
@@ -482,7 +553,18 @@ class HtmlReportGenerator @Inject constructor(
         .finding-list li { font-size: 11.5px; color: #334e68; padding: 3px 0; }
         .note-card { background: #f7f9fc; border: 1px solid #e6ecf3; border-radius: 12px; padding: 12px 16px; margin: 10px 0; }
         .note-card p { font-size: 12.5px; color: #243b53; }
+
+        /* Valuation */
+        .val-hero { display: flex; align-items: center; gap: 16px; margin: 10px 0 4px; }
+        .val-score { font-size: 46px; font-weight: 800; line-height: 1; }
+        .val-score span { font-size: 16px; font-weight: 600; color: #829ab1; }
+        .val-band { font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 20px; }
+        .val-bar { position: relative; height: 12px; background: #eef2f7; border-radius: 20px; margin: 14px 0 6px; overflow: hidden; }
+        .val-bar-fill { height: 100%; border-radius: 20px; }
+        .val-bench { position: absolute; top: 0; width: 2px; height: 100%; background: #243b53; }
+        .val-legend { display: flex; justify-content: space-between; font-size: 11px; color: #627d98; margin-bottom: 6px; }
     """.trimIndent()
+    }
 
     // ---- Stats computation (parity with legacy generator) -------------------
 

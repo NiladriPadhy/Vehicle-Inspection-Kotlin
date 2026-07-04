@@ -20,6 +20,7 @@ import com.vsp.core.model.Session
 import com.vsp.core.model.SyncSummary
 import com.vsp.core.model.Vehicle
 import com.vsp.core.model.VehicleCategory
+import com.vsp.core.model.config.BrandingConfig
 import com.vsp.core.model.config.QuestionnaireConfig
 import com.vsp.core.model.config.VehicleCatalog
 import kotlinx.coroutines.flow.Flow
@@ -46,6 +47,9 @@ interface ConfigRepository {
 
     /** The active vehicle make/model/variant catalog, if any. */
     suspend fun vehicleCatalog(): VehicleCatalog?
+
+    /** The active vendor report branding/theme (cache → default fallback). */
+    suspend fun activeBranding(): BrandingConfig
 }
 
 interface ExportRepository {

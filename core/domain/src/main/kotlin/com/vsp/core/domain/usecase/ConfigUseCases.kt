@@ -3,6 +3,7 @@ package com.vsp.core.domain.usecase
 import com.vsp.core.domain.repository.ConfigRepository
 import com.vsp.core.domain.repository.InspectionRepository
 import com.vsp.core.model.AppResult
+import com.vsp.core.model.config.BrandingConfig
 import com.vsp.core.model.config.QuestionnaireConfig
 import javax.inject.Inject
 
@@ -21,6 +22,13 @@ class GetActiveQuestionnaireUseCase @Inject constructor(
     private val configRepository: ConfigRepository,
 ) {
     suspend operator fun invoke(): QuestionnaireConfig = configRepository.activeQuestionnaire()
+}
+
+/** Returns the active vendor report branding/theme (cache → default fallback). */
+class GetActiveBrandingUseCase @Inject constructor(
+    private val configRepository: ConfigRepository,
+) {
+    suspend operator fun invoke(): BrandingConfig = configRepository.activeBranding()
 }
 
 /**

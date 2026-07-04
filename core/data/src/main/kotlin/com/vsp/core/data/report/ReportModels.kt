@@ -1,5 +1,6 @@
 package com.vsp.core.data.report
 
+import com.vsp.core.model.Valuation
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -23,6 +24,7 @@ data class ReportDto(
     val checklist: List<ReportChecklistSectionDto> = emptyList(),
     val damageAssessment: List<ReportDamageAssessmentDto> = emptyList(),
     val finalAssessment: ReportFinalAssessmentDto? = null,
+    val valuation: Valuation? = null,
 )
 
 @Serializable

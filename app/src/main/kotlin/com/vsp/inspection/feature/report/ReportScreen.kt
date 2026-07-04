@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.vsp.core.model.Valuation
 import com.vsp.core.ui.components.ErrorBanner
 import com.vsp.core.ui.components.LoadingOverlay
 import com.vsp.core.ui.components.PrimaryButton
@@ -82,9 +83,11 @@ fun ReportScreen(
             state.message?.let { ErrorBanner(message = it) { viewModel.consumeMessage() } }
 
             content?.let { c ->
-                VehicleDetailsCard(c)
-                AtAGlanceCard(c)
-                InspectionSummaryCard(c)
+                val brandColor = parseHexColor(c.branding.primaryColor, MaterialTheme.colorScheme.primary)
+                VehicleDetailsCard(c, brandColor)
+                AtAGlanceCard(c, brandColor)
+                c.valuation?.let { ValuationCard(it, brandColor) }
+                InspectionSummaryCard(c, brandColor)
 
                 PrimaryButton(
                     text = if (state.exportingPdf) "Preparing PDF…" else "Generate Comprehensive Report in PDF",
@@ -109,18 +112,18 @@ fun ReportScreen(
 }
 
 @Composable
-private fun SectionCard(title: String, content: @Composable () -> Unit) {
+private fun SectionCard(title: String, titleColor: Color, content: @Composable () -> Unit) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = titleColor)
             content()
         }
     }
 }
 
 @Composable
-private fun VehicleDetailsCard(content: ReportContent) {
-    SectionCard(title = "Inspected Vehicle Details") {
+private fun VehicleDetailsCard(content: ReportContent, brandColor: Color) {
+    SectionCard(title = "Inspected Vehicle Details", titleColor = brandColor) {
         Text(content.vehicleTitle, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
         if (content.subtitle.isNotBlank()) {
             Text(
@@ -134,8 +137,8 @@ private fun VehicleDetailsCard(content: ReportContent) {
 }
 
 @Composable
-private fun AtAGlanceCard(content: ReportContent) {
-    SectionCard(title = "At a glance") {
+private fun AtAGlanceCard(content: ReportContent, brandColor: Color) {
+    SectionCard(title = "At a glance", titleColor = brandColor) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -158,8 +161,80 @@ private fun AtAGlanceCard(content: ReportContent) {
 }
 
 @Composable
-private fun InspectionSummaryCard(content: ReportContent) {
-    SectionCard(title = "Inspection summary") {
+private fun ValuationCard(v: Valuation, brandColor: Color) {
+    val scoreColor = when {
+        v.overallScore >= 70 -> Color(0xFF2E7D32)
+        v.overallScore >= 50 -> Color(0xFFF9A825)
+        else -> Color(0xFFC62828)
+    }
+    val positionColor = when (v.marketPosition) {
+        "Above typical" -> Color(0xFF2E7D32)
+        "Below typical" -> Color(0xFFC62828)
+        else -> Color(0xFFF9A825)
+    }
+    SectionCard(title = "Valuation & market position", titleColor = brandColor) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Text(
+                "${v.overallScore}",
+                style = MaterialTheme.typography.displaySmall,
+                fontWeight = FontWeight.Bold,
+                color = scoreColor,
+            )
+            Column {
+                Text("/ 100", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Surface(color = scoreColor.copy(alpha = 0.12f), shape = CircleShape) {
+                    Text(
+                        "${v.conditionBand} condition",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = scoreColor,
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                    )
+                }
+            }
+        }
+        LinearProgressIndicator(
+            progress = { v.overallScore / 100f },
+            color = scoreColor,
+            trackColor = scoreColor.copy(alpha = 0.15f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(CircleShape),
+        )
+        val deltaText = if (v.deltaVsTypical >= 0) "+${v.deltaVsTypical}" else "${v.deltaVsTypical}"
+        Text(
+            "This vehicle: ${v.overallScore}/100   •   Typical: ${v.benchmarkScore}/100 ($deltaText vs typical)",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text("Market position", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
+            Surface(color = positionColor.copy(alpha = 0.12f), shape = CircleShape) {
+                Text(
+                    v.marketPosition,
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = positionColor,
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                )
+            }
+        }
+        Text(v.verdict, style = MaterialTheme.typography.bodyMedium)
+        Text(
+            v.priceGuidance,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
+@Composable
+private fun InspectionSummaryCard(content: ReportContent, brandColor: Color) {
+    SectionCard(title = "Inspection summary", titleColor = brandColor) {
         if (content.categoryRatings.isEmpty()) {
             Text(
                 "No category ratings recorded for this inspection.",
@@ -257,6 +332,9 @@ private fun ratingColor(rating: Int): Color = when {
     rating == 3 -> Color(0xFFF9A825)
     else -> Color(0xFFC62828)
 }
+
+private fun parseHexColor(hex: String, fallback: Color): Color =
+    runCatching { Color(android.graphics.Color.parseColor(hex)) }.getOrDefault(fallback)
 
 private fun ratingWord(rating: Int): String = when (rating) {
     5 -> "Excellent"
