@@ -9,7 +9,16 @@ configuration/accounts (Firebase Realtime Database) and AI vision (Gemini) are o
 degrade gracefully when unconfigured.
 
 ---
+## Support
 
+> If this project helped you, consider sponsoring or buying me a coffee.
+> Your support keeps it maintained, documented, and free.
+
+[![GitHub Sponsors](https://img.shields.io/badge/Sponsor-GitHub-ea4aaa?style=for-the-badge&logo=GitHub-Sponsors&logoColor=white)](https://github.com/sponsors/NiladriPadhy)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/npadhy)
+
+This work stays open source. A small contribution helps cover time for bug fixes, new features, and docs.
+---
 ## Features
 
 - **Checklist-first workflow** — a configurable inspection checklist is the primary interface
@@ -263,13 +272,4 @@ questionnaire versioning/snapshotting, and zip-based data export/import:
 - `plan.md` — technical implementation plan for the config/accounts/export-import overhaul
 
 ---
-
-## Support
-
-> If this plugin saved you a weekend of native plumbing, consider buying me a coffee.
-> Your support keeps it maintained, documented, and free.
-
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/npadhy)
-
-This code stays open source. A coffee helps cover time for bug fixes, new features, and docs.
 
