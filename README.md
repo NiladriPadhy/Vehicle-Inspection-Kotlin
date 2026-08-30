@@ -16,6 +16,7 @@ degrade gracefully when unconfigured.
 This work stays open source. A small contribution helps cover time for bug fixes, new features, and docs.
 [![GitHub Sponsors](https://img.shields.io/badge/Sponsor-GitHub-ea4aaa?style=for-the-badge&logo=GitHub-Sponsors&logoColor=white)](https://github.com/sponsors/NiladriPadhy)
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/npadhy)
+
 This work stays open source. A small contribution helps cover time for bug fixes, new features, and docs.
 ---
 ## Features
